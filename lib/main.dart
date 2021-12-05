@@ -88,15 +88,8 @@ class _MyHomePageState extends State<MyHomePage> {
             onTap: _onItemTapped,
           ),
           body: Center(
-            child: const Browser(title: 'Browser'),
+            child: BrowserWidget(),
           ),
-          floatingActionButton: _selectedIndex == 0
-              ? FloatingActionButton(
-                  onPressed: () {},
-                  tooltip: 'Increment',
-                  child: const Icon(Icons.add),
-                )
-              : null,
         ));
   }
 }

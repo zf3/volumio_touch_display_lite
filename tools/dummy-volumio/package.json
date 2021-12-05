@@ -1,0 +1,20 @@
+{
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "name": "dummy-volumio",
+  "version": "1.0.0",
+  "main": "dummy-volumio.js",
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  },
+  "scripts": {
+    "start": "nodemon dummy-volumio.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
+
+//     "start": "NODE_DEBUG=cluster,net,http,fs,tls,module,timers nodemon dummy-volumio.js",

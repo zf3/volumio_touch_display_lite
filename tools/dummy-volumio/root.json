@@ -1,0 +1,85 @@
+{
+    "navigation": {
+        "lists": [
+            {
+                "albumart": "/albumart?sourceicon=music_service/mpd/favouritesicon.png",
+                "name": "Favorites",
+                "uri": "favourites",
+                "plugin_type": "",
+                "plugin_name": ""
+            },
+            {
+                "albumart": "/albumart?sourceicon=music_service/mpd/playlisticon.png",
+                "name": "Playlists",
+                "uri": "playlists",
+                "plugin_type": "music_service",
+                "plugin_name": "mpd"
+            },
+            {
+                "albumart": "/albumart?sourceicon=music_service/mpd/musiclibraryicon.png",
+                "name": "Music Library",
+                "uri": "music-library",
+                "plugin_type": "music_service",
+                "plugin_name": "mpd"
+            },
+            {
+                "albumart": "/albumart?sourceicon=music_service/mpd/artisticon.png",
+                "name": "Artists",
+                "uri": "artists://",
+                "plugin_type": "music_service",
+                "plugin_name": "mpd"
+            },
+            {
+                "albumart": "/albumart?sourceicon=music_service/mpd/albumicon.png",
+                "name": "Albums",
+                "uri": "albums://",
+                "plugin_type": "music_service",
+                "plugin_name": "mpd"
+            },
+            {
+                "albumart": "/albumart?sourceicon=music_service/mpd/genreicon.png",
+                "name": "Genres",
+                "uri": "genres://",
+                "plugin_type": "music_service",
+                "plugin_name": "mpd"
+            },
+            {
+                "name": "Media Servers",
+                "uri": "upnp",
+                "plugin_type": "music_service",
+                "plugin_name": "upnp_browser",
+                "albumart": "/albumart?sourceicon=music_service/upnp_browser/dlnaicon.png"
+            },
+            {
+                "albumart": "/albumart?sourceicon=music_service/last_100/icon.png",
+                "name": "last 100",
+                "uri": "Last_100",
+                "plugin_type": "music_service",
+                "plugin_name": "last_100"
+            },
+            {
+                "albumart": "/albumart?sourceicon=music_service/webradio/icon.png",
+                "icon": "fa fa-microphone",
+                "name": "Web Radio",
+                "uri": "radio",
+                "plugin_type": "music_service",
+                "plugin_name": "webradio"
+            },
+            {
+                "albumart": "/albumart?sourceicon=music_service/tunein_radio/tunein.svg ",
+                "icon": "fa fa-microphone",
+                "name": "TuneIn Radio",
+                "uri": "tunein",
+                "plugin_type": "music_service",
+                "plugin_name": "tunein_radio"
+            },
+            {
+                "name": "TIDAL",
+                "uri": "tidal://",
+                "plugin_type": "music_service",
+                "plugin_name": "streaming_services",
+                "albumart": "/albumart?sourceicon=music_service/streaming_services/icons/tidal/tidal-icon.png"
+            }
+        ]
+    }
+}
