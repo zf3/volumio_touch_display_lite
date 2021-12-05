@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 
+import 'browser.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -86,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
             onTap: _onItemTapped,
           ),
           body: Center(
-            child: Text(_tabTitle[_selectedIndex]),
+            child: const Browser(title: 'Browser'),
           ),
           floatingActionButton: _selectedIndex == 0
               ? FloatingActionButton(

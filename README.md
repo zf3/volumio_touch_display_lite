@@ -1,4 +1,4 @@
-# CleanPlayer
+# DigiPlayer
 
 A clean Flutter frontend for Volumio.
 
