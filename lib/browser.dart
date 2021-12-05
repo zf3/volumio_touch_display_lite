@@ -1,6 +1,10 @@
 import 'dart:convert';
+import 'package:flutter/rendering.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+
+import 'main.dart';
 
 class BrowserWidget extends StatefulWidget {
   const BrowserWidget({Key? key}) : super(key: key);
@@ -15,7 +19,7 @@ class BrowserState extends State<BrowserWidget> {
   Future<dynamic> fetchList() async {
     debugPrint("Getting uri: $uri");
     final response = await http
-        .get(Uri.parse('http://192.168.1.96/api/v1/browse?uri=$uri'), headers: {
+        .get(Uri.parse('http://$serverAddr/api/v1/browse?uri=$uri'), headers: {
       "Accept": "application/json",
       "Access-Control_Allow_Origin": "*"
     });
@@ -77,6 +81,14 @@ class BrowserState extends State<BrowserWidget> {
 
             return ListView.builder(
               itemBuilder: (BuildContext context, int index) {
+                String artUrl = "";
+                String? a = list[index]['albumart'];
+                if (a != null &&
+                    a.contains('cacheid') &&
+                    !a.contains('path=&')) {
+                  artUrl = "http://$serverAddr${list[index]['albumart']}";
+                }
+
                 return InkWell(
                     onTap: () {
                       setState(() {
@@ -85,12 +97,24 @@ class BrowserState extends State<BrowserWidget> {
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(
-                          top: 16, bottom: 16, left: 16, right: 16),
+                          top: 4, bottom: 4, left: 16, right: 16),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
-                          iconmap(list[index]),
-                          const SizedBox(width: 10),
+                          SizedBox(
+                              height: 32,
+                              width: 32,
+                              child: Center(
+                                child: artUrl == ""
+                                    ? iconmap(list[index])
+                                    : CachedNetworkImage(
+                                        imageUrl: artUrl,
+                                        errorWidget: (context, url, error) =>
+                                            const Icon(
+                                                Icons.music_note_outlined),
+                                      ),
+                              )),
+                          const SizedBox(width: 8),
                           Text(list[index]['name'] ?? list[index]['title']),
                           const Spacer(),
                         ],

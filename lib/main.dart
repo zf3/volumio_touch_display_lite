@@ -8,6 +8,8 @@ void main() {
   runApp(const MyApp());
 }
 
+const String serverAddr = "192.168.1.96";
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 

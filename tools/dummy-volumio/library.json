@@ -1,0 +1,16 @@
+{
+    "navigation":{
+        "prev":{"uri":""},
+        "lists":[
+            {
+                "availableListViews":["grid","list"],
+                "items":[{"type":"folder",
+                    "title":"NAS",
+                    "service":"mpd",
+                    "albumart":"/albumart?cacheid=557&path=&icon=server&metadata=false",
+                    "uri":"music-library/NAS"}
+                    ]
+            }
+        ]
+    }
+}
