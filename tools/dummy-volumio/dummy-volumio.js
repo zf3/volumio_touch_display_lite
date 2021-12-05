@@ -15,6 +15,8 @@ app.get('/api/v1/browse', (req, res) => {
         res.setHeader('Accept', 'application/json');
         res.setHeader('Access-Control_Allow_Origin', '*');
         res.sendFile(path.resolve(__dirname, 'root.json'));
+    } else if (uri == 'music-library') {
+      res.sendFile(path.resolve(__dirname, "library.json"))
     } else {
         res.setHeader('Accept', 'application/json');
         res.setHeader('Access-Control_Allow_Origin', '*');

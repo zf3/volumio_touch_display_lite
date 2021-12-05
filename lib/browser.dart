@@ -2,21 +2,25 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
-class BrowserWidget extends StatelessWidget {
-  final String uri = '/';
-
+class BrowserWidget extends StatefulWidget {
   const BrowserWidget({Key? key}) : super(key: key);
 
-  Future<dynamic> fetchList() async {
-    final response = await http.get(
-        Uri.parse('http://127.0.0.1:3000/api/v1/browse?uri=$uri'),
-        headers: {
-          "Accept": "application/json",
-          "Access-Control_Allow_Origin": "*"
-        });
+  @override
+  State<BrowserWidget> createState() => BrowserState();
+}
 
-    // log('got response');
-    // debugPrint('Code: ${response.statusCode}');
+class BrowserState extends State<BrowserWidget> {
+  String uri = '/';
+
+  Future<dynamic> fetchList() async {
+    debugPrint("Getting uri: $uri");
+    final response = await http
+        .get(Uri.parse('http://192.168.1.96/api/v1/browse?uri=$uri'), headers: {
+      "Accept": "application/json",
+      "Access-Control_Allow_Origin": "*"
+    });
+
+    debugPrint('Response: ${response.body}');
     if (response.statusCode == 200) {
       // debugPrint("Response: $response");
       return json.decode(response.body);
@@ -24,6 +28,12 @@ class BrowserWidget extends StatelessWidget {
       // If that call was not successful, throw an error.
       throw Exception('Failed to load post');
     }
+  }
+
+  void home() {
+    setState(() {
+      uri = '/';
+    });
   }
 
   static Icon iconmap(dynamic item) {
@@ -59,24 +69,33 @@ class BrowserWidget extends StatelessWidget {
             var list = [];
             if (data != null) {
               list = data['navigation']['lists'];
+              // debugPrint('List items: ${list[0]['items']}');
+              if (list.isNotEmpty && list[0]['items'] != null) {
+                list = list[0]['items'];
+              }
             }
 
             return ListView.builder(
               itemBuilder: (BuildContext context, int index) {
-                return Card(
+                return InkWell(
+                    onTap: () {
+                      setState(() {
+                        uri = list[index]['uri'];
+                      });
+                    },
                     child: Padding(
-                  padding: const EdgeInsets.only(
-                      top: 16, bottom: 16, left: 16, right: 16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      iconmap(list[index]),
-                      const SizedBox(width: 10),
-                      Text(list[index]['name']),
-                      const Spacer(),
-                    ],
-                  ),
-                ));
+                      padding: const EdgeInsets.only(
+                          top: 16, bottom: 16, left: 16, right: 16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          iconmap(list[index]),
+                          const SizedBox(width: 10),
+                          Text(list[index]['name'] ?? list[index]['title']),
+                          const Spacer(),
+                        ],
+                      ),
+                    ));
               },
               itemCount: list.length,
             );
@@ -85,23 +104,4 @@ class BrowserWidget extends StatelessWidget {
           }
         });
   }
-
-  //   return ListView(children: <Widget>[
-  //     Container(
-  //       height: 50,
-  //       color: Colors.amber[600],
-  //       child: const Center(child: Text('Entry A')),
-  //     ),
-  //     Container(
-  //       height: 50,
-  //       color: Colors.amber[500],
-  //       child: const Center(child: Text('Entry B')),
-  //     ),
-  //     Container(
-  //       height: 50,
-  //       color: Colors.amber[100],
-  //       child: const Center(child: Text('Entry C')),
-  //     ),
-  //   ]);
-  // }
 }

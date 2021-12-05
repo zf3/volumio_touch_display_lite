@@ -53,14 +53,20 @@ class MyHomePage extends StatefulWidget {
 
 final _tabTitle = ['Browse', 'Playing', 'Settings'];
 
+final GlobalKey<BrowserState> _myKey = GlobalKey();
+
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
   String title = _tabTitle[0];
+  final BrowserWidget _browser = BrowserWidget(key: _myKey);
 
   _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
       title = _tabTitle[index];
+      if (_selectedIndex == 0) {
+        _myKey.currentState?.home();
+      }
     });
   }
 
@@ -70,11 +76,8 @@ class _MyHomePageState extends State<MyHomePage> {
         length: 3,
         child: Scaffold(
           appBar: AppBar(
-            // Here we take the value from the MyHomePage object that was created by
-            // the App.build method, and use it to set our appbar title.
             title: Text(widget.title),
           ),
-          // ignore: prefer_const_literals_to_create_immutables
           bottomNavigationBar: BottomNavigationBar(
             items: [
               BottomNavigationBarItem(
@@ -88,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
             onTap: _onItemTapped,
           ),
           body: Center(
-            child: BrowserWidget(),
+            child: _browser,
           ),
         ));
   }
