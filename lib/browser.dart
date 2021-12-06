@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:flutter/rendering.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -124,7 +123,7 @@ class BrowserState extends State<BrowserWidget> {
               itemCount: list.length,
             );
           } else {
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           }
         });
   }

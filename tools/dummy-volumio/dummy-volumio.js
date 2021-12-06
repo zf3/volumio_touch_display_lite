@@ -24,6 +24,20 @@ app.get('/api/v1/browse', (req, res) => {
     }
 })
 
+app.get('/api/v1/getState', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'state.json'))
+})
+
+app.get('/albumart', (req, res) => {
+  var cacheid = req.query.cacheid
+  var p = req.query.path
+  if (cacheid && p) {
+    res.sendFile(path.resolve(__dirname, 'albumart.jpg'))
+  } else {
+    res.send('No album art')
+  }
+})
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
