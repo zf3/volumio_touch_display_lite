@@ -66,15 +66,15 @@ difference() {
         translate([1,2,0]) cube([W-2,1,2]);
     }
     
-    translate([19,0,-5]) cube(11);
-    translate([45,0,0]) rotate([-90,0,0]) cylinder(h=4,r=7);
-    translate([3,D-3,0]) cube([12,4,2]);
-    translate([W-3-12,D-3,0]) cube([12,4,2]);
+    translate([17,0,-5]) cube(11);
+    translate([43,0,0]) rotate([-90,0,0]) cylinder(h=4,r=7);
+    translate([2,D-3,0]) cube([13,4,2]);
+    translate([W-2-13,D-3,0]) cube([13,4,2]);
 }
 
-translate([1,20,0]) cube([6,3,3]);  // 左侧下方卡子
+//translate([1,20,0]) cube([6,3,3]);  // 左侧下方卡子
 
-translate([W-1-6,20,0]) cube([6,3,3]);  // 右侧下方卡子
+//translate([W-1-6,20,0]) cube([6,3,3]);  // 右侧下方卡子
 
 translate([1,D-2-3,0]) cube([15,3,3]);    // 左侧上方卡子
 
@@ -82,8 +82,11 @@ translate([W-1-15,D-2-3,0]) cube([15,3,3]);    // 右侧上方卡子
 
 }
 
+cover();
+
+/*
 minkowski()
 {
     translate([0,D,H]) rotate([180,0,0]) cover();
     sphere(.25);
-}
+}*/
