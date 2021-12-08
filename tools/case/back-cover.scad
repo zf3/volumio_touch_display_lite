@@ -1,4 +1,5 @@
 
+
 W=95;
 D=75;
 H=17;
@@ -6,6 +7,21 @@ H=17;
 // OpenSCAD trigonometry is in degrees
 alpha = 10;     // 面 [0,1,9,8] 与垂直之间的夹角度数
 beta = 3;       // 其它三个接近垂直的面与垂直之间的夹角度数
+
+module snapon() {
+    difference() {
+        union() {
+            cube([3,2,2]);
+            cube([2,2,4]);
+            translate([0,0,4]) cube([3,2,2]);
+        }
+        translate([3,-0.5,4]) rotate([0,-30,0]) cube([3,3,3]);
+    }
+}
+
+module hole() {
+    rotate([-90,0,0]) cylinder(h=4, r=1);
+}
 
 module cover() {
 
@@ -70,23 +86,49 @@ difference() {
     translate([43,0,0]) rotate([-90,0,0]) cylinder(h=4,r=7);
     translate([2,D-3,0]) cube([13,4,2]);
     translate([W-2-13,D-3,0]) cube([13,4,2]);
+
+    // 通风孔
+    for (i = [-4:1:4]) {
+        translate([W/2+i*6, 0, H-5]) hole();
+        translate([W/2+i*6, D-5, H-5]) hole();
+    }
+
 }
 
-//translate([1,20,0]) cube([6,3,3]);  // 左侧下方卡子
-
-//translate([W-1-6,20,0]) cube([6,3,3]);  // 右侧下方卡子
-
+translate([1,20,0]) cube([6,3,3]);  // 左侧下方卡子
+translate([W-1-6,20,0]) cube([6,3,3]);  // 右侧下方卡子
 translate([1,D-2-3,0]) cube([15,3,3]);    // 左侧上方卡子
-
 translate([W-1-15,D-2-3,0]) cube([15,3,3]);    // 右侧上方卡子
 
+
+
+
 }
 
-cover();
+module logo() {
+    linear_extrude(height = 0.5) {
+        rotate([0,0,180]) scale(5)
+        import("bunny.svg");
+    }
+}
 
-/*
+module all() {
+//    difference() {
+        cover();
+//        translate([67,55,H-0.5]) logo();
+//    }
+    translate([W-5,D-12,2]) rotate([180,0,0]) snapon();
+    translate([5,35,2]) rotate([180,0,180]) snapon();
+}
+
+
+
+//all();
+
+//color("red") logo();
+
 minkowski()
 {
-    translate([0,D,H]) rotate([180,0,0]) cover();
+    translate([0,D,H]) rotate([180,0,0]) all();
     sphere(.25);
-}*/
+}
