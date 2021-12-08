@@ -15,28 +15,27 @@ class BrowserWidget extends StatefulWidget {
 class BrowserState extends State<BrowserWidget> {
   String uri = '/';
 
-  Future<dynamic> fetchList() async {
+  fetchList() {
     debugPrint("Getting uri: $uri");
-    final response = await http
-        .get(Uri.parse('http://$serverAddr/api/v1/browse?uri=$uri'), headers: {
-      "Accept": "application/json",
-      "Access-Control_Allow_Origin": "*"
-    });
-
-    debugPrint('Response: ${response.body}');
-    if (response.statusCode == 200) {
-      // debugPrint("Response: $response");
-      return json.decode(response.body);
+    if (uri == '/') {
+      socket.emit('getBrowseSources');
     } else {
-      // If that call was not successful, throw an error.
-      throw Exception('Failed to load post');
+      var data = {"uri": uri};
+      socket.emit("browseLibrary", data);
     }
   }
 
-  void home() {
+  void navigate(String to_uri) {
     setState(() {
-      uri = '/';
+      uri = to_uri;
     });
+    fetchList();
+  }
+
+  @override
+  initState() {
+    super.initState();
+    fetchList();
   }
 
   static Icon iconmap(dynamic item) {
@@ -64,17 +63,24 @@ class BrowserState extends State<BrowserWidget> {
   @override
   Widget build(BuildContext context) {
     debugPrint("Build");
-    return FutureBuilder<dynamic>(
-        future: fetchList(),
+    return StreamBuilder<dynamic>(
+        stream: browseStream,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
+          debugPrint("Browse stream snapshot: $snapshot");
+          if (snapshot.connectionState == ConnectionState.active &&
+              snapshot.hasData) {
             dynamic data = snapshot.data;
             var list = [];
             if (data != null) {
-              list = data['navigation']['lists'];
-              // debugPrint('List items: ${list[0]['items']}');
-              if (list.isNotEmpty && list[0]['items'] != null) {
-                list = list[0]['items'];
+              if (data is List) {
+                list = data;
+              } else {
+                list = data['navigation']['lists'];
+
+                // debugPrint('List items: ${list[0]['items']}');
+                if (list.isNotEmpty && list[0]['items'] != null) {
+                  list = list[0]['items'];
+                }
               }
             }
 
@@ -90,9 +96,7 @@ class BrowserState extends State<BrowserWidget> {
 
                 return InkWell(
                     onTap: () {
-                      setState(() {
-                        uri = list[index]['uri'];
-                      });
+                      navigate(list[index]['uri']);
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(

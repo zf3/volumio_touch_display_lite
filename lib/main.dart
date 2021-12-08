@@ -1,17 +1,27 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 
 import 'browser.dart';
 import 'play.dart';
 import 'settings.dart';
 
+// const String serverAddr = "192.168.1.96";
+const String serverAddr = "192.168.1.96";
+Socket socket =
+    io('ws://$serverAddr:3000', OptionBuilder().disableAutoConnect().build());
+
+StreamController<dynamic> browseController = StreamController<dynamic>();
+Stream<dynamic> browseStream = browseController.stream;
+StreamController<dynamic> playController = StreamController<dynamic>();
+Stream<dynamic> playStream = playController.stream;
+
 void main() {
   runApp(const MyApp());
 }
-
-// const String serverAddr = "192.168.1.96";
-const String serverAddr = "127.0.0.1:3000";
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -58,9 +68,37 @@ class _MyHomePageState extends State<MyHomePage> {
       _selectedIndex = index;
       title = _tabTitle[index];
       if (_selectedIndex == 0) {
-        _browserKey.currentState?.home();
+        _browserKey.currentState?.navigate("/");
       }
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    debugPrint("Setting up WebSocket");
+    socket.on('pushState', (data) {
+      debugPrint("WebSocket pushState: $data");
+      playController.add(data);
+    });
+    socket.onDisconnect((_) => debugPrint('WebSocket disconnect'));
+    socket.onConnect((_) => debugPrint('WebSocket connected'));
+    socket.onError((data) => debugPrint("WebSocket error: $data"));
+    socket.connect();
+
+    socket.on("pushBrowseSources", (data) {
+      debugPrint("WebSocket pushBrowseSources: $data");
+      browseController.add(data);
+    });
+
+    socket.on("pushBrowseLibrary", (data) {
+      debugPrint("WebSocket pushBrowseLibrary: ");
+      debugPrint(data.toString());
+      browseController.add(data);
+    });
+
+    socket.emit("volume", 100);
   }
 
   @override
