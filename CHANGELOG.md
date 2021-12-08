@@ -1,6 +1,11 @@
-## TODO
- * 浏览音乐库时增加回到上一层的按钮，要显示在App Bar上面
+## TODO for 1.0
+ * 好像中文名的目录浏览有问题
+ * 支持横竖屏自适应
+ * 通过flutter-pi运行，然后打包成Volumio plugin的zip
  * 点击一首歌时，应该把整个目录加到queue中，然后从点击这首歌开始播放
+
+## More TODO
+ * 浏览音乐库时增加回到上一层的按钮，要显示在App Bar上面
  * 参考Apple Music
    * 正在播放页变成卡片式
    * 正在播放页加入模糊背景（album art主题色？）
