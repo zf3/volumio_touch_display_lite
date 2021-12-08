@@ -1,8 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'main.dart';
+
+// Once per second
+Stream<int> progressStream =
+    Stream.periodic(const Duration(seconds: 1), (int x) {
+  return x;
+});
 
 class PlayWidget extends StatefulWidget {
   const PlayWidget({Key? key}) : super(key: key);
@@ -12,6 +16,12 @@ class PlayWidget extends StatefulWidget {
 }
 
 class PlayState extends State<PlayWidget> {
+  int pushSeek = 0;
+  int pushDuration = 0;
+  int pushTimestamp = 0;
+  bool playing = false;
+  double progress = 0.0;
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<dynamic>(
@@ -23,11 +33,16 @@ class PlayState extends State<PlayWidget> {
             String? url = data['albumart'];
             if (url != null) {
               url = "http://$serverAddr$url";
-              debugPrint("Play screen album art: $url");
-              double progress = 1.0 / 1000 * data['seek'] / data['duration'];
-              if (progress.isNaN) {
-                progress = 0.0;
-              }
+              // debugPrint("Play screen album art: $url");
+              pushSeek = data['seek'];
+              pushDuration = data['duration'];
+              pushTimestamp = DateTime.now().millisecondsSinceEpoch;
+              playing = data['status'] == 'play';
+              progress = pushSeek / 1000.0 / pushDuration;
+              if (progress.isNaN) progress = 0.0;
+              debugPrint(
+                  "Progress: seek=$pushSeek, duration=$pushDuration, playing=$playing, progress=$progress");
+
               return Center(
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -40,10 +55,25 @@ class PlayState extends State<PlayWidget> {
                     const SizedBox(height: 20),
                     Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 30),
-                        child: LinearProgressIndicator(
-                          backgroundColor: Colors.grey[200],
-                          valueColor: const AlwaysStoppedAnimation(Colors.blue),
-                          value: progress,
+                        child: StreamBuilder(
+                          stream: progressStream,
+                          builder: (BuildContext context,
+                              AsyncSnapshot<int> snapshot) {
+                            if (playing) {
+                              // update progress
+                              int passed =
+                                  DateTime.now().millisecondsSinceEpoch -
+                                      pushTimestamp;
+                              progress =
+                                  (pushSeek + passed) / 1000.0 / pushDuration;
+                            }
+                            return LinearProgressIndicator(
+                              backgroundColor: Colors.grey[200],
+                              valueColor:
+                                  const AlwaysStoppedAnimation(Colors.blue),
+                              value: progress,
+                            );
+                          },
                         )),
                     const SizedBox(height: 10),
                     Row(

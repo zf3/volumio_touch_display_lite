@@ -9,8 +9,8 @@ import 'browser.dart';
 import 'play.dart';
 import 'settings.dart';
 
-// const String serverAddr = "192.168.1.96";
 const String serverAddr = "192.168.1.96";
+
 Socket socket =
     io('ws://$serverAddr:3000', OptionBuilder().disableAutoConnect().build());
 
@@ -18,6 +18,8 @@ StreamController<dynamic> browseController = StreamController<dynamic>();
 Stream<dynamic> browseStream = browseController.stream;
 StreamController<dynamic> playController = StreamController<dynamic>();
 Stream<dynamic> playStream = playController.stream;
+
+// late Stream perSecond;
 
 void main() {
   runApp(const MyApp());
@@ -98,7 +100,13 @@ class _MyHomePageState extends State<MyHomePage> {
       browseController.add(data);
     });
 
-    socket.emit("volume", 100);
+    // perSecond = Stream.periodic(const Duration(seconds: 1), (int x) {
+    //   return x;
+    // });
+
+    // perSecond.listen((event) {
+    //   socket.emit("getState");
+    // });
   }
 
   @override
