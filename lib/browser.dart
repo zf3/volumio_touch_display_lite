@@ -25,9 +25,9 @@ class BrowserState extends State<BrowserWidget> {
     }
   }
 
-  void navigate(String to_uri) {
+  void navigate(String toUri) {
     setState(() {
-      uri = to_uri;
+      uri = toUri;
     });
     fetchList();
   }
@@ -96,7 +96,14 @@ class BrowserState extends State<BrowserWidget> {
 
                 return InkWell(
                     onTap: () {
-                      navigate(list[index]['uri']);
+                      if (list[index]['type'] == 'song') {
+                        // socket.emit('clearQueue');
+                        socket.emit(
+                            'replaceAndPlay', {"uri": list[index]['uri']});
+                        // socket.emit('play', 0);
+                      } else {
+                        navigate(list[index]['uri']);
+                      }
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(

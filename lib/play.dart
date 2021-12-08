@@ -24,6 +24,10 @@ class PlayState extends State<PlayWidget> {
             if (url != null) {
               url = "http://$serverAddr$url";
               debugPrint("Play screen album art: $url");
+              double progress = 1.0 / 1000 * data['seek'] / data['duration'];
+              if (progress.isNaN) {
+                progress = 0.0;
+              }
               return Center(
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -35,37 +39,57 @@ class PlayState extends State<PlayWidget> {
                     Text(data['artist']),
                     const SizedBox(height: 20),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30),
-                      child: LinearProgressIndicator(
+                        padding: const EdgeInsets.symmetric(horizontal: 30),
+                        child: LinearProgressIndicator(
                           backgroundColor: Colors.grey[200],
                           valueColor: const AlwaysStoppedAnimation(Colors.blue),
-                          value: 1.0 * data['seek'] / data['duration']),
-                    ),
+                          value: progress,
+                        )),
                     const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(
-                          Icons.skip_previous_rounded,
-                          size: 50,
-                          color: Color.fromARGB(255, 100, 100, 100),
+                        IconButton(
+                          icon: const Icon(
+                            Icons.skip_previous_rounded,
+                            color: Color.fromARGB(255, 100, 100, 100),
+                          ),
+                          iconSize: 50,
+                          onPressed: () {
+                            socket.emit('prev');
+                          },
                         ),
-                        data['status'] == 'stop'
-                            ? const Icon(
-                                Icons.play_arrow_rounded,
-                                size: 50,
-                                color: Color.fromARGB(255, 100, 100, 100),
+                        const SizedBox(width: 20),
+                        data['status'] != 'play'
+                            ? IconButton(
+                                icon: const Icon(
+                                  Icons.play_arrow_rounded,
+                                  color: Color.fromARGB(255, 100, 100, 100),
+                                ),
+                                iconSize: 50,
+                                onPressed: () {
+                                  socket.emit("toggle");
+                                },
                               )
-                            : const Icon(
-                                Icons.stop_rounded,
-                                size: 50,
-                                color: Color.fromARGB(255, 100, 100, 100),
-                              ),
-                        const Icon(
-                          Icons.skip_next_rounded,
-                          size: 50,
-                          color: Color.fromARGB(255, 100, 100, 100),
-                        )
+                            : IconButton(
+                                icon: const Icon(
+                                  Icons.pause_rounded,
+                                  color: Color.fromARGB(255, 100, 100, 100),
+                                ),
+                                iconSize: 50,
+                                onPressed: () {
+                                  socket.emit("pause");
+                                }),
+                        const SizedBox(width: 20),
+                        IconButton(
+                            icon: const Icon(
+                              Icons.skip_next_rounded,
+                              color: Color.fromARGB(255, 100, 100, 100),
+                            ),
+                            iconSize: 50,
+                            onPressed: () {
+                              socket.emit('next');
+                            }),
                       ],
                     )
                   ]));

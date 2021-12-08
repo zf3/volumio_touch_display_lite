@@ -1,8 +1,15 @@
 ## TODO
  * 改成Web Socket，状态显示变实时
+ * 需要增加一个[Animated Progress Bar](https://medium.com/@calebkiage/creating-an-animated-progress-indicator-in-flutter-part-2-5b78b0198a46)来作为播放进度显示
+ * 浏览音乐库时增加回到上一层的按钮，要显示在App Bar上面
+ * 点击一首歌时，应该把整个目录加到queue中，然后从点击这首歌开始播放
  * 参考Apple Music
    * 正在播放页变成卡片式
    * 正在播放页加入模糊背景（album art主题色？）
+
+```
+{"status":"play","position":0,"seek":487,"duration":225,"samplerate":"44.1 kHz","bitdepth":"24 bit","channels":2,"random":false,"updatedb":false,"repeat":false,"bitrate":"320 Kbps","isStreaming":false,"title":"Easy On Me","artist":"Adele","album":"Adele Essentials","uri":"NAS/DS/2021/Adele - Essentials/02. Easy On Me.mp3","trackType":"mp3"}
+```
 
 
 ## 2021.12.8 切换到WebSocket接口
@@ -29,6 +36,7 @@ browseLibrary ==> pushBrowseLibrary
 getMultiRoomDevices ==> pushMultiRoomDevices
 search ==> pushBrowseLibrary
  ```
+ * [Source code](https://github.com/volumio/Volumio2/blob/master/app/plugins/user_interface/websocket/index.js)
 
 ## 2021.12.6: 增加简单的正在播放页面
  * 在Playing页，显示album art
