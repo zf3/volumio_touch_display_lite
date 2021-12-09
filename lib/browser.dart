@@ -1,5 +1,4 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'dart:convert' show utf8;
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -20,7 +19,10 @@ class BrowserState extends State<BrowserWidget> {
     if (uri == '/') {
       socket.emit('getBrowseSources');
     } else {
-      var data = {"uri": uri};
+      // Volumio 2.9 expects raw UTF-8 on server side.
+      List<int> bytes = utf8.encode(uri);
+      String uri2 = String.fromCharCodes(bytes);
+      var data = {"uri": uri2};
       socket.emit("browseLibrary", data);
     }
   }
@@ -96,10 +98,12 @@ class BrowserState extends State<BrowserWidget> {
 
                 return InkWell(
                     onTap: () {
+                      debugPrint("URI: ${list[index]['uri']}");
                       if (list[index]['type'] == 'song') {
                         // socket.emit('clearQueue');
-                        socket.emit(
-                            'replaceAndPlay', {"uri": list[index]['uri']});
+                        List<int> bytes = utf8.encode(list[index]['uri']);
+                        String uri2 = String.fromCharCodes(bytes);
+                        socket.emit('replaceAndPlay', {"uri": uri2});
                         // socket.emit('play', 0);
                       } else {
                         navigate(list[index]['uri']);
