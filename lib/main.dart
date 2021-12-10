@@ -14,6 +14,8 @@ const String serverAddr = "192.168.1.96";
 Socket socket =
     io('ws://$serverAddr:3000', OptionBuilder().disableAutoConnect().build());
 
+bool landscape = false;
+
 StreamController<dynamic> browseController = StreamController<dynamic>();
 Stream<dynamic> browseStream = browseController.stream;
 StreamController<dynamic> playController = StreamController<dynamic>();
@@ -59,11 +61,6 @@ final GlobalKey<BrowserState> _browserKey = GlobalKey(),
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
   String title = _tabTitle[0];
-  final List<Widget> _pages = [
-    BrowserWidget(key: _browserKey),
-    PlayWidget(key: _playKey),
-    SettingsWidget(key: _settingsKey)
-  ];
 
   _onItemTapped(int index) {
     setState(() {
@@ -71,6 +68,9 @@ class _MyHomePageState extends State<MyHomePage> {
       title = _tabTitle[index];
       if (_selectedIndex == 0) {
         _browserKey.currentState?.navigate("/");
+      } else if (_selectedIndex == 1) {
+        // getState
+        socket.emit('getState');
       }
     });
   }
@@ -99,22 +99,18 @@ class _MyHomePageState extends State<MyHomePage> {
       debugPrint(data.toString());
       browseController.add(data);
     });
-
-    // perSecond = Stream.periodic(const Duration(seconds: 1), (int x) {
-    //   return x;
-    // });
-
-    // perSecond.listen((event) {
-    //   socket.emit("getState");
-    // });
   }
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    landscape = size.height < size.width;
+    debugPrint("main landscape: $landscape");
+    _playKey.currentState?.setState(() {});
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
+      // appBar: AppBar(
+      //   title: Text(widget.title),
+      // ),
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(label: _tabTitle[0], icon: Icon(Icons.home)),
@@ -126,7 +122,11 @@ class _MyHomePageState extends State<MyHomePage> {
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
       ),
-      body: IndexedStack(children: _pages, index: _selectedIndex),
+      body: IndexedStack(children: [
+        BrowserWidget(key: _browserKey),
+        PlayWidget(key: _playKey),
+        SettingsWidget(key: _settingsKey)
+      ], index: _selectedIndex),
     );
   }
 }

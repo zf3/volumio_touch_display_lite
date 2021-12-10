@@ -1,5 +1,4 @@
 ## TODO for 1.0
- * 支持横竖屏自适应
  * 通过flutter-pi运行，然后打包成Volumio plugin的zip
  * 点击一首歌时，应该把整个目录加到queue中，然后从点击这首歌开始播放
 
@@ -9,9 +8,12 @@
    * 正在播放页变成卡片式
    * 正在播放页加入模糊背景（album art主题色？）
 
+## 2021.12.10
+ * 支持横竖屏自适应：[《Flutter实战·第二版》](https://book.flutterchina.club/)
+ * 解决歌曲播放完成后，Play页面红屏的问题
+
 ## 2021.12.9
  * 解决中文名的目录浏览问题：服务器端需要UTF-8 bytes，所以需要转码一下。播放也做了同样修改。
-
 
 ## 2021.12.8 切换到WebSocket接口，实现基本功能
  * 可以实现浏览音乐库，以及实时显示正在播放的功能。
@@ -54,3 +56,4 @@ DONE
  * 改成Web Socket，状态显示变实时
  * 需要增加一个[Animated Progress Bar](https://medium.com/@calebkiage/creating-an-animated-progress-indicator-in-flutter-part-2-5b78b0198a46)来作为播放进度显示
  * 好像中文名的目录浏览有问题
+ * 支持横竖屏[自适应](https://docs.flutter.dev/development/ui/layout/adaptive-responsive)
