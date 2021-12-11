@@ -12,7 +12,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 
 // import 'package:http/http.dart' as http;
 
-const String serverAddr = "192.168.1.96";
+const String serverAddr = "volumio.local";
 const int serverPort = 3000;
 const String defaultDir = 'music-library/NAS/DS/2021';
 
@@ -44,6 +44,11 @@ void main() async {
   runApp(const MyApp());
 }
 
+final GlobalKey<BrowserState> _browserKey = GlobalKey(),
+    _playKey = GlobalKey(),
+    _settingsKey = GlobalKey();
+final GlobalKey<_MyHomePageState> homeKey = GlobalKey();
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -57,7 +62,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Noto Sans CJK SC',
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Digi Player'),
+      home: MyHomePage(title: 'Digi Player', key: homeKey),
     );
   }
 }
@@ -73,15 +78,11 @@ class MyHomePage extends StatefulWidget {
 
 final _tabTitle = ['Browse', 'Playing', 'Settings'];
 
-final GlobalKey<BrowserState> _browserKey = GlobalKey(),
-    _playKey = GlobalKey(),
-    _settingsKey = GlobalKey();
-
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
   String title = _tabTitle[0];
 
-  _onItemTapped(int index) {
+  showPage(int index) {
     setState(() {
       title = _tabTitle[index];
       int oldIndex = _selectedIndex;
@@ -146,7 +147,7 @@ class _MyHomePageState extends State<MyHomePage> {
               label: _tabTitle[2], icon: Icon(Icons.settings))
         ],
         currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
+        onTap: showPage,
         showSelectedLabels: false,
         showUnselectedLabels: false,
       ),

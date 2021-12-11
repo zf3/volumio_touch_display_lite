@@ -1,6 +1,7 @@
 import 'dart:convert' show utf8;
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'main.dart';
 
@@ -13,12 +14,18 @@ class BrowserWidget extends StatefulWidget {
 
 // 取得UTF-8的码点
 String enc(String s) {
-  List<int> bytes = utf8.encode(s);
-  return String.fromCharCodes(bytes);
+  if (kIsWeb) {
+    List<int> bytes = utf8.encode(s);
+    return String.fromCharCodes(bytes);
+  } else {
+    return s;
+  }
 }
 
 class BrowserState extends State<BrowserWidget> {
   String uri = defaultDir;
+
+  ScrollController _scrollController = ScrollController();
 
   fetchList() {
     debugPrint("Getting uri: $uri");
@@ -26,9 +33,9 @@ class BrowserState extends State<BrowserWidget> {
       socket.emit('getBrowseSources');
     } else {
       // Volumio 2.9 expects raw UTF-8 on server side.
-      List<int> bytes = utf8.encode(uri);
-      String uri2 = String.fromCharCodes(bytes);
+      String uri2 = enc(uri);
       var data = {"uri": uri2};
+      debugPrint("URI length=${uri2.length}");
       socket.emit("browseLibrary", data);
     }
   }
@@ -38,6 +45,7 @@ class BrowserState extends State<BrowserWidget> {
       uri = toUri;
     });
     fetchList();
+    _scrollController.jumpTo(0);
   }
 
   @override
@@ -74,7 +82,7 @@ class BrowserState extends State<BrowserWidget> {
     return StreamBuilder<dynamic>(
         stream: browseStream,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          debugPrint("Browse stream snapshot: $snapshot");
+          // debugPrint("Browse stream snapshot: $snapshot");
           if (snapshot.connectionState == ConnectionState.active &&
               snapshot.hasData) {
             dynamic data = snapshot.data;
@@ -93,6 +101,7 @@ class BrowserState extends State<BrowserWidget> {
             }
 
             return ListView.builder(
+              controller: _scrollController,
               itemBuilder: (BuildContext context, int index) {
                 String artUrl = "";
                 String? a = list[index]['albumart'];
@@ -108,8 +117,19 @@ class BrowserState extends State<BrowserWidget> {
                       debugPrint("URI: ${list[index]['uri']}");
                       if (list[index]['type'] == 'song') {
                         // 播放目录下所有歌曲
+                        if (kIsWeb) {
+                          // Hack: for Web, need to use UTF-8 bytes for all URI
+                          for (int i = 0; i < list.length; i++) {
+                            if (list[i]['uri'] != null) {
+                              list[i]['uri'] = enc(list[i]['uri']);
+                            }
+                          }
+                        }
                         var data = {"list": list, "index": index};
                         socket.emit('replaceAndPlay', data);
+
+                        // 切换到Play页面
+                        homeKey.currentState?.showPage(1);
 
                         // Old: play just one song
                         // List<int> bytes = utf8.encode(list[index]['uri']);
@@ -148,7 +168,7 @@ class BrowserState extends State<BrowserWidget> {
               itemCount: list.length,
             );
           } else {
-            return const CircularProgressIndicator();
+            return const Center(child: CircularProgressIndicator());
           }
         });
   }
