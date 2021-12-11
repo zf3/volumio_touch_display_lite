@@ -84,7 +84,9 @@ class _MyHomePageState extends State<MyHomePage> {
   _onItemTapped(int index) {
     setState(() {
       title = _tabTitle[index];
-      if (index == 0 && _selectedIndex == 0) {
+      int oldIndex = _selectedIndex;
+      _selectedIndex = index;
+      if (index == 0 && oldIndex == 0) {
         // When already in browse page, tap the tab once for defaultDir
         // tap twice and more for root (all sources)
         String? uri = _browserKey.currentState?.uri;
@@ -95,7 +97,6 @@ class _MyHomePageState extends State<MyHomePage> {
         // getState
         socket.emit('getState');
       }
-      _selectedIndex = index;
     });
   }
 
