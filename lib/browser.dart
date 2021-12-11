@@ -12,7 +12,7 @@ class BrowserWidget extends StatefulWidget {
 }
 
 class BrowserState extends State<BrowserWidget> {
-  String uri = '/';
+  String uri = defaultDir;
 
   fetchList() {
     debugPrint("Getting uri: $uri");

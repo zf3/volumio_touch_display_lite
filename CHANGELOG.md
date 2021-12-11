@@ -1,9 +1,10 @@
 ## TODO for 1.0
- * 需要安装中文字体
  * 点击一首歌时，应该把整个目录加到queue中，然后从点击这首歌开始播放
+ * 浏览音乐库时增加回到上一层的按钮，要显示在App Bar上面；Tap Browse Tab只是切换到Browse Page。
+ * 增加：随机播放状态、重复状态、采样率和音频格式显示。
+ * Seek功能
 
 ## More TODO
- * 浏览音乐库时增加回到上一层的按钮，要显示在App Bar上面
  * 参考Apple Music
    * 正在播放页变成卡片式
    * 正在播放页加入模糊背景（album art主题色？）
@@ -19,6 +20,8 @@
  # on Pi
  flutter-pi digiplayer/
  ```
+ * 需要安装中文字体
+ * [flutter-pi release编译](https://github.com/ardera/flutter-pi#building-the-appso-for-running-your-app-in-releaseprofile-mode)，需要一个Linux x64机器.
 
 ## 2021.12.9
  * 解决中文名的目录浏览问题：服务器端需要UTF-8 bytes，所以需要转码一下。播放也做了同样修改。

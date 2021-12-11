@@ -8,15 +8,23 @@ import 'package:socket_io_client/socket_io_client.dart';
 import 'browser.dart';
 import 'play.dart';
 import 'settings.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
-import 'package:http/http.dart' as http;
+// import 'package:http/http.dart' as http;
 
-const String serverAddr = "volumio.local";
+const String serverAddr = "192.168.1.96";
 const int serverPort = 3000;
+const String defaultDir = 'music-library/NAS/DS/2021';
 
-// 没有这个transport(['websocket'])，在native client下就连不上
-Socket socket = io('ws://$serverAddr:$serverPort',
-    OptionBuilder().setTransports(['websocket']).disableAutoConnect().build());
+// 没有transport(['websocket'])，在native client下就连不上
+Socket socket = io(
+    'ws://$serverAddr:$serverPort',
+    kIsWeb
+        ? OptionBuilder().disableAutoConnect().build()
+        : OptionBuilder()
+            .setTransports(['websocket'])
+            .disableAutoConnect()
+            .build());
 
 bool landscape = false;
 
@@ -28,10 +36,10 @@ Stream<dynamic> playStream = playController.stream;
 // late Stream perSecond;
 
 void main() async {
-  http.Response r =
-      await http.get(Uri.parse('http://$serverAddr:$serverPort/api/v1/browse'));
-  debugPrint("${r.statusCode}");
-  debugPrint(r.body);
+  // http.Response r =
+  //     await http.get(Uri.parse('http://$serverAddr:$serverPort/api/v1/browse'));
+  // debugPrint("${r.statusCode}");
+  // debugPrint(r.body);
 
   runApp(const MyApp());
 }
@@ -45,6 +53,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Digi Player',
       theme: ThemeData(
+        // fontFamily: 'yahei',
+        fontFamily: 'Noto Sans CJK SC',
         primarySwatch: Colors.blue,
       ),
       home: const MyHomePage(title: 'Digi Player'),
@@ -73,14 +83,19 @@ class _MyHomePageState extends State<MyHomePage> {
 
   _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
       title = _tabTitle[index];
-      if (_selectedIndex == 0) {
-        _browserKey.currentState?.navigate("/");
+      if (index == 0 && _selectedIndex == 0) {
+        // When already in browse page, tap the tab once for defaultDir
+        // tap twice and more for root (all sources)
+        String? uri = _browserKey.currentState?.uri;
+        debugPrint(uri);
+        String target = (uri == defaultDir || uri == '/') ? '/' : defaultDir;
+        _browserKey.currentState?.navigate(target);
       } else if (_selectedIndex == 1) {
         // getState
         socket.emit('getState');
       }
+      _selectedIndex = index;
     });
   }
 
@@ -131,6 +146,8 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
       ),
       body: IndexedStack(children: [
         BrowserWidget(key: _browserKey),
