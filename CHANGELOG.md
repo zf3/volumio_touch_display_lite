@@ -1,18 +1,17 @@
-## TODO for 1.0
- * 点击一首歌时，应该把整个目录加到queue中，然后从点击这首歌开始播放
+## TODO
  * 浏览音乐库时增加回到上一层的按钮，要显示在App Bar上面；Tap Browse Tab只是切换到Browse Page。
- * 增加：随机播放状态、重复状态、采样率和音频格式显示。
+ * 重复状态、采样率和音频格式显示。
  * Seek功能
-
-## More TODO
  * 参考Apple Music
    * 正在播放页变成卡片式
    * 正在播放页加入模糊背景（album art主题色？）
 
-## 2021.12.10
+## 2021.12.10 - v1.0!
  * 支持横竖屏自适应：[《Flutter实战·第二版》](https://book.flutterchina.club/)
  * 解决歌曲播放完成后，Play页面红屏的问题
  * 升级Volumio 3，因为flutter-pi需要Raspbian Buster，而Volumio 2还在Raspbian Jessie老版
+ * 点击一首歌时，把整个目录加到queue中，然后从点击这首歌开始播放(使用replaceAndPlay命令)
+ * 增加随机播放功能
  * 通过flutter-pi运行，然后打包成Volumio plugin的zip
  ```
  flutter build bundle

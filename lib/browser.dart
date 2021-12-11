@@ -11,6 +11,12 @@ class BrowserWidget extends StatefulWidget {
   State<BrowserWidget> createState() => BrowserState();
 }
 
+// 取得UTF-8的码点
+String enc(String s) {
+  List<int> bytes = utf8.encode(s);
+  return String.fromCharCodes(bytes);
+}
+
 class BrowserState extends State<BrowserWidget> {
   String uri = defaultDir;
 
@@ -101,11 +107,14 @@ class BrowserState extends State<BrowserWidget> {
                     onTap: () {
                       debugPrint("URI: ${list[index]['uri']}");
                       if (list[index]['type'] == 'song') {
-                        // socket.emit('clearQueue');
-                        List<int> bytes = utf8.encode(list[index]['uri']);
-                        String uri2 = String.fromCharCodes(bytes);
-                        socket.emit('replaceAndPlay', {"uri": uri2});
-                        // socket.emit('play', 0);
+                        // 播放目录下所有歌曲
+                        var data = {"list": list, "index": index};
+                        socket.emit('replaceAndPlay', data);
+
+                        // Old: play just one song
+                        // List<int> bytes = utf8.encode(list[index]['uri']);
+                        // String uri2 = String.fromCharCodes(bytes);
+                        // socket.emit('replaceAndPlay', {"uri": uri2});
                       } else {
                         navigate(list[index]['uri']);
                       }

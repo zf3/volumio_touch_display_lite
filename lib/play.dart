@@ -83,7 +83,6 @@ class PlayState extends State<PlayWidget> {
                         socket.emit('prev');
                       },
                     ),
-                    const SizedBox(width: 20),
                     data['status'] != 'play'
                         ? IconButton(
                             icon: const Icon(
@@ -104,7 +103,6 @@ class PlayState extends State<PlayWidget> {
                             onPressed: () {
                               socket.emit("pause");
                             }),
-                    const SizedBox(width: 20),
                     IconButton(
                         icon: const Icon(
                           Icons.skip_next_rounded,
@@ -113,6 +111,18 @@ class PlayState extends State<PlayWidget> {
                         iconSize: 50,
                         onPressed: () {
                           socket.emit('next');
+                        }),
+                    IconButton(
+                        icon: Icon(
+                          data['random'] == true
+                              ? Icons.shuffle_on_rounded
+                              : Icons.shuffle_rounded,
+                          color: const Color.fromARGB(255, 100, 100, 100),
+                        ),
+                        iconSize: 30,
+                        onPressed: () {
+                          socket.emit('setRandom',
+                              {"value": data['random'] == true ? false : true});
                         }),
                   ],
                 )
