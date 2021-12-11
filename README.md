@@ -1,8 +1,12 @@
+EN | [中文](README.zh.md)
+
 # DigiPlayer - A Clean UI for Volumio 3
 
 DigiPlayer is a clean touch UI for Volumio 3, written in Flutter for the Raspberry Pi Touch Display.
 
 Feng Zhou, 2021-12
+
+
 
 This is a simple user interface for Volumio 3, the Linux distribution for music playback.
 I wrote it for playing music with the Raspberry Pi + 7-inch touch screen. The end result
@@ -65,7 +69,7 @@ Optionally you can add it to /etc/rc.local to run every time Pi starts up,
 runuser -l volumio -c "/usr/local/bin/flutter-pi /home/volumio/digiplayer" &
 ```
 
-## Why use Volumio?
+## Why Volumio?
 
 Here is what I like about this setup,
  * *It plays music anywhere in the home network*. I mostly use the device to play music files stored in a NAS. It is very convenient. I do not even need to touch the device to add new music.
