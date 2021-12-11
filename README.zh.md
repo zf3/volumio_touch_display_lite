@@ -24,7 +24,7 @@ Feng Zhou, 2021-12
  * 开发计算机 (Windows/Mac/Linux)
  * 需要一台Linux x64计算机或虚拟机，用来编译Flutter的app.so
 
-首页，看一眼[flutter engine binaries](https://github.com/ardera/flutter-engine-binaries-for-arm)页面，看下目前树莓派上Flutter引擎支持最新的版本是多少，写这个文档时是2.5.3.
+看一眼[flutter engine binaries](https://github.com/ardera/flutter-engine-binaries-for-arm)页面，看下目前树莓派上Flutter引擎支持最新的版本是多少，写这个文档时是2.5.3.
 
 去Flutter主页下载并安装相应版本的[Flutter](https://docs.flutter.dev/development/tools/sdk/releases)，这有1多个G，可以用中国镜像.
 
@@ -56,7 +56,7 @@ ssh volumio@volumio.local
 flutter-pi --release digiplayer
 ```
 
-现在应该可以看到文件头图那样的界面。
+应该可以看到文件头图那样的界面。
 
 如果需要，可以在设备启动时自动运行DigiPlayer。这可以通过`sudo nano /etc/rc.local`修改这个启动文件来实现，在最后增加：
 ```
@@ -68,6 +68,6 @@ runuser -l volumio -c "/usr/local/bin/flutter-pi /home/volumio/digiplayer" &
 这样的一个组合我觉得还挺好用的，原因包括：
 
  * **灵活的网络播放**，我主要是把音乐文件放在NAS上面，然后通过客厅的带屏树莓派播放就很方便。
- * **数字无损输出**，我加了一个数字输出的扩展板（[Teradak I2S](https://item.taobao.com/item.htm?spm=a1z09.2.0.0.14fc2e8d0yaAi8&id=596093222906&_u=b2m28ph86a8)），声音质量不错。然后为了美观还3D打印了一个[后盖](tools/case/case_side.jpg) ([OpenSCAD源代码](tools/case/))。
- * **手机遥控很好用**，用手机浏览器访问volumio.local就可以了，浏览、播放功能都很方便，这样在沙发上就可以操作音乐播放。屏上的显示也都是同步的。在iPhone，把这个网页加到首页（Safari中`分享->添加一到主屏幕`）之后和App基本分不出来。
+ * **数字无损输出**，我加了一个数字输出的扩展板（[Teradak I2S](https://item.taobao.com/item.htm?spm=a1z09.2.0.0.14fc2e8d0yaAi8&id=596093222906&_u=b2m28ph86a8)，一百多块），声音质量不错。然后为了美观还3D打印了一个[后盖](tools/case/case_side.jpg) ([OpenSCAD源代码](tools/case/))。
+ * **手机遥控很好用**，用手机浏览器访问volumio.local就可以了，浏览、播放功能都很方便，这样在沙发上就可以操作音乐播放。屏上的显示也都是同步的。在iPhone上还可以把这个网页加到手机首页（Safari中`分享->添加一到主屏幕`），这样体验更好，和App基本分不出来。
  * Volumio还有一堆功能没时间看，总体还是挺成熟的了。
