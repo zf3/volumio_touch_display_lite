@@ -1,6 +1,6 @@
 EN | [中文](README.zh.md)
 
-# DigiPlayer - A Clean UI for Volumio 3
+# DigiPlayer - A Clean Touch UI for Volumio 3
 
 DigiPlayer is a clean touch UI for Volumio 3, written in Flutter for the Raspberry Pi Touch Display.
 

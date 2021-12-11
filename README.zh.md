@@ -1,6 +1,6 @@
 [EN](READM.md) | 中文
 
-# DigiPlayer - Volumio 3简约界面
+# DigiPlayer - Volumio 3简约触控界面
 
 Feng Zhou, 2021-12
 
