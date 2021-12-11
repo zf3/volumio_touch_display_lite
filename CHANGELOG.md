@@ -1,5 +1,5 @@
 ## TODO for 1.0
- * 通过flutter-pi运行，然后打包成Volumio plugin的zip
+ * 需要安装中文字体
  * 点击一首歌时，应该把整个目录加到queue中，然后从点击这首歌开始播放
 
 ## More TODO
@@ -11,6 +11,14 @@
 ## 2021.12.10
  * 支持横竖屏自适应：[《Flutter实战·第二版》](https://book.flutterchina.club/)
  * 解决歌曲播放完成后，Play页面红屏的问题
+ * 升级Volumio 3，因为flutter-pi需要Raspbian Buster，而Volumio 2还在Raspbian Jessie老版
+ * 通过flutter-pi运行，然后打包成Volumio plugin的zip
+ ```
+ flutter build bundle
+ rsync -av build/flutter_assets/* volumio@192.168.1.96:digiplayer/
+ # on Pi
+ flutter-pi digiplayer/
+ ```
 
 ## 2021.12.9
  * 解决中文名的目录浏览问题：服务器端需要UTF-8 bytes，所以需要转码一下。播放也做了同样修改。

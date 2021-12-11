@@ -32,7 +32,7 @@ class PlayState extends State<PlayWidget> {
             dynamic data = snapshot.data;
             String? url = data['albumart'];
             if (url != null) {
-              url = "http://$serverAddr$url";
+              url = "http://$serverAddr:$serverPort$url";
               // debugPrint("Play screen album art: $url");
               pushSeek = data['seek'] ?? 0;
               pushDuration = data['duration'];

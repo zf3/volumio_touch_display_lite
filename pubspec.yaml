@@ -34,7 +34,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   desktop_window: ^0.4.0
   http: ^0.13.4
-  socket_io_client: ^1.0.2
+  socket_io_client: ^1.0.1
   cached_network_image: ^3.2.0
 
 dev_dependencies:

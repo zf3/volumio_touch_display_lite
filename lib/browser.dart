@@ -93,7 +93,8 @@ class BrowserState extends State<BrowserWidget> {
                 if (a != null &&
                     a.contains('cacheid') &&
                     !a.contains('path=&')) {
-                  artUrl = "http://$serverAddr${list[index]['albumart']}";
+                  artUrl =
+                      "http://$serverAddr:$serverPort${list[index]['albumart']}";
                 }
 
                 return InkWell(

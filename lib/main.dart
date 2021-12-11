@@ -9,10 +9,14 @@ import 'browser.dart';
 import 'play.dart';
 import 'settings.dart';
 
-const String serverAddr = "192.168.1.96";
+import 'package:http/http.dart' as http;
 
-Socket socket =
-    io('ws://$serverAddr:3000', OptionBuilder().disableAutoConnect().build());
+const String serverAddr = "volumio.local";
+const int serverPort = 3000;
+
+// 没有这个transport(['websocket'])，在native client下就连不上
+Socket socket = io('ws://$serverAddr:$serverPort',
+    OptionBuilder().setTransports(['websocket']).disableAutoConnect().build());
 
 bool landscape = false;
 
@@ -23,7 +27,12 @@ Stream<dynamic> playStream = playController.stream;
 
 // late Stream perSecond;
 
-void main() {
+void main() async {
+  http.Response r =
+      await http.get(Uri.parse('http://$serverAddr:$serverPort/api/v1/browse'));
+  debugPrint("${r.statusCode}");
+  debugPrint(r.body);
+
   runApp(const MyApp());
 }
 
@@ -84,21 +93,22 @@ class _MyHomePageState extends State<MyHomePage> {
       debugPrint("WebSocket pushState: $data");
       playController.add(data);
     });
+    socket.onConnecting((data) => debugPrint("WebSocket connecting"));
+    socket.onConnectTimeout((data) => debugPrint("WebSocket connect timeout."));
     socket.onDisconnect((_) => debugPrint('WebSocket disconnect'));
     socket.onConnect((_) => debugPrint('WebSocket connected'));
     socket.onError((data) => debugPrint("WebSocket error: $data"));
-    socket.connect();
-
     socket.on("pushBrowseSources", (data) {
       debugPrint("WebSocket pushBrowseSources: $data");
       browseController.add(data);
     });
-
     socket.on("pushBrowseLibrary", (data) {
       debugPrint("WebSocket pushBrowseLibrary: ");
       debugPrint(data.toString());
       browseController.add(data);
     });
+
+    socket.connect();
   }
 
   @override
