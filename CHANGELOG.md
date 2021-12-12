@@ -1,4 +1,11 @@
 ## More TODO
+ * 空闲时需要能关闭屏幕，参考[Touch Display plugin](https://github.com/volumio/volumio-plugins/tree/master/plugins/miscellanea/touch_display)
+```
+// Wake up
+exec('/usr/bin/xset -display :' + displayNumber + ' s reset dpms force on', { uid: 1000, gid: 1000 }, ...
+// Set timeout
+exec('/usr/bin/xset -display :' + displayNumber + ' s off +dpms dpms 0 0 ' + timeout, { uid: 1000, gid: 1000 }, ...
+ ```
  * 打包成Volumio plugin的zip
  * 重复状态、采样率和音频格式显示。
  * Seek功能

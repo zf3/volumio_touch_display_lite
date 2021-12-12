@@ -61,6 +61,8 @@ class PlayState extends State<PlayWidget> {
                               pushTimestamp;
                           progress =
                               (pushSeek + passed) / 1000.0 / pushDuration;
+                          //  Keep screen on when playing
+                          poke();
                         }
                         return LinearProgressIndicator(
                           backgroundColor: Colors.grey[200],

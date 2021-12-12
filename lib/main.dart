@@ -9,10 +9,11 @@ import 'browser.dart';
 import 'play.dart';
 import 'settings.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'dart:io';
 
 // import 'package:http/http.dart' as http;
 
-const String serverAddr = "volumio.local";
+const String serverAddr = "localhost";
 const int serverPort = 3000;
 const String defaultDir = 'music-library/NAS/DS/2021';
 
@@ -35,12 +36,33 @@ Stream<dynamic> playStream = playController.stream;
 
 // late Stream perSecond;
 
-void main() async {
-  // http.Response r =
-  //     await http.get(Uri.parse('http://$serverAddr:$serverPort/api/v1/browse'));
-  // debugPrint("${r.statusCode}");
-  // debugPrint(r.body);
+// Set screen blank timeout to 1 minute
+setblank() {
+  if (kIsWeb) return;
+  Process.run('/usr/local/bin/setblank.sh', []).then((r) {
+    debugPrint(
+        "Setblank: code=${r.exitCode}, out=${r.stdout}, err=${r.stderr}");
+  });
+}
 
+int lastPokeTime = 0;
+
+// Turn on screen when running on flutter-pi
+poke() {
+  if (kIsWeb) return;
+  int t = DateTime.now().millisecondsSinceEpoch;
+  if (t - lastPokeTime > 10 * 1000) {
+    // poke every minute
+    Process.run('/usr/local/bin/poke.sh', []).then((r) {
+      debugPrint("Poke: code=${r.exitCode}, out=${r.stdout}, err=${r.stderr}");
+    });
+    lastPokeTime = t;
+  }
+}
+
+void main() async {
+  setblank(); // send screen blank timeout
+  poke(); // Turn screen on at startup
   runApp(const MyApp());
 }
 
@@ -135,27 +157,30 @@ class _MyHomePageState extends State<MyHomePage> {
     debugPrint("main landscape: $landscape");
     _playKey.currentState?.setState(() {});
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text(widget.title),
-      // ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(label: _tabTitle[0], icon: Icon(Icons.home)),
-          BottomNavigationBarItem(
-              label: _tabTitle[1], icon: Icon(Icons.play_arrow)),
-          BottomNavigationBarItem(
-              label: _tabTitle[2], icon: Icon(Icons.settings))
-        ],
-        currentIndex: _selectedIndex,
-        onTap: showPage,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-      ),
-      body: IndexedStack(children: [
-        BrowserWidget(key: _browserKey),
-        PlayWidget(key: _playKey),
-        SettingsWidget(key: _settingsKey)
-      ], index: _selectedIndex),
-    );
+        // appBar: AppBar(
+        //   title: Text(widget.title),
+        // ),
+        bottomNavigationBar: BottomNavigationBar(
+          items: [
+            BottomNavigationBarItem(
+                label: _tabTitle[0], icon: Icon(Icons.home)),
+            BottomNavigationBarItem(
+                label: _tabTitle[1], icon: Icon(Icons.play_arrow)),
+            BottomNavigationBarItem(
+                label: _tabTitle[2], icon: Icon(Icons.settings))
+          ],
+          currentIndex: _selectedIndex,
+          onTap: showPage,
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+        ),
+        body: GestureDetector(
+          onTap: () => poke(),
+          child: IndexedStack(children: [
+            BrowserWidget(key: _browserKey),
+            PlayWidget(key: _playKey),
+            SettingsWidget(key: _settingsKey)
+          ], index: _selectedIndex),
+        ));
   }
 }

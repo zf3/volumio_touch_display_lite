@@ -64,10 +64,13 @@ flutter-pi --release digiplayer
 
 You should see DigiPlayer as shown at the beginning of this README.
 
-Optionally you can add it to /etc/rc.local to run every time Pi starts up,
+Optionally you can add it to /etc/rc.local to run every time Pi starts up.
 ```
-runuser -l volumio -c "/usr/local/bin/flutter-pi /home/volumio/digiplayer" &
+sleep 5
+/sbin/runuser -l root -c '/usr/local/bin/flutter-pi --release /home/volumio/digiplayer' > /home/volumio/log &
 ```
+
+See [tweaks.md](doc/tweaks.md) for more adjustments I found useful.
 
 ## Why Volumio?
 
