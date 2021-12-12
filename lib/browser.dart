@@ -114,6 +114,7 @@ class BrowserState extends State<BrowserWidget> {
 
                 return InkWell(
                     onTap: () {
+                      poke();
                       debugPrint("URI: ${list[index]['uri']}");
                       if (list[index]['type'] == 'song') {
                         // 播放目录下所有歌曲

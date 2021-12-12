@@ -11,11 +11,16 @@ import 'settings.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'dart:io';
 
-// import 'package:http/http.dart' as http;
-
+//
+// Change these settings
+//
 const String serverAddr = "localhost";
 const int serverPort = 3000;
 const String defaultDir = 'music-library/NAS/DS/2021';
+const int backlightSeconds = 300; // dim backlight after this duration
+//
+// No more changes after this
+//
 
 // 没有transport(['websocket'])，在native client下就连不上
 Socket socket = io(
@@ -34,35 +39,34 @@ Stream<dynamic> browseStream = browseController.stream;
 StreamController<dynamic> playController = StreamController<dynamic>();
 Stream<dynamic> playStream = playController.stream;
 
+// Once per second
+Stream<int> secondStream = Stream.periodic(const Duration(seconds: 1), (int x) {
+  return x;
+}).asBroadcastStream();
+
 // late Stream perSecond;
 
 // Set screen blank timeout to 1 minute
-setblank() {
+bool? lastLighton;
+backlight(bool lighton) {
   if (kIsWeb) return;
-  Process.run('/usr/local/bin/setblank.sh', []).then((r) {
-    debugPrint(
-        "Setblank: code=${r.exitCode}, out=${r.stdout}, err=${r.stderr}");
-  });
+  if (lastLighton == lighton) return;
+  int v = lighton ? 255 : 0;
+  final File f = File('/sys/class/backlight/rpi_backlight/brightness');
+  f
+      .writeAsString("$v")
+      .then((value) => {debugPrint("Screen brightness set to $v")});
+
+  lastLighton = lighton;
 }
 
-int lastPokeTime = 0;
-
-// Turn on screen when running on flutter-pi
-poke() {
-  if (kIsWeb) return;
-  int t = DateTime.now().millisecondsSinceEpoch;
-  if (t - lastPokeTime > 10 * 1000) {
-    // poke every minute
-    Process.run('/usr/local/bin/poke.sh', []).then((r) {
-      debugPrint("Poke: code=${r.exitCode}, out=${r.stdout}, err=${r.stderr}");
-    });
-    lastPokeTime = t;
-  }
+int lastPokeTime = DateTime.now().millisecondsSinceEpoch;
+void poke() {
+  lastPokeTime = DateTime.now().millisecondsSinceEpoch;
+  backlight(true);
 }
 
 void main() async {
-  setblank(); // send screen blank timeout
-  poke(); // Turn screen on at startup
   runApp(const MyApp());
 }
 
@@ -148,6 +152,14 @@ class _MyHomePageState extends State<MyHomePage> {
     });
 
     socket.connect();
+
+    secondStream.listen((event) {
+      int t = DateTime.now().millisecondsSinceEpoch;
+      if (t - lastPokeTime > backlightSeconds * 1000) {
+        backlight(false);
+      }
+    });
+    poke(); // Turn backlight on
   }
 
   @override
@@ -156,27 +168,30 @@ class _MyHomePageState extends State<MyHomePage> {
     landscape = size.height < size.width;
     debugPrint("main landscape: $landscape");
     _playKey.currentState?.setState(() {});
-    return Scaffold(
-        // appBar: AppBar(
-        //   title: Text(widget.title),
-        // ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: [
-            BottomNavigationBarItem(
-                label: _tabTitle[0], icon: Icon(Icons.home)),
-            BottomNavigationBarItem(
-                label: _tabTitle[1], icon: Icon(Icons.play_arrow)),
-            BottomNavigationBarItem(
-                label: _tabTitle[2], icon: Icon(Icons.settings))
-          ],
-          currentIndex: _selectedIndex,
-          onTap: showPage,
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-        ),
-        body: GestureDetector(
-          onTap: () => poke(),
-          child: IndexedStack(children: [
+    return GestureDetector(
+        onTap: () => poke(),
+        child: Scaffold(
+          // appBar: AppBar(
+          //   title: Text(widget.title),
+          // ),
+          bottomNavigationBar: BottomNavigationBar(
+            items: [
+              BottomNavigationBarItem(
+                  label: _tabTitle[0], icon: Icon(Icons.home)),
+              BottomNavigationBarItem(
+                  label: _tabTitle[1], icon: Icon(Icons.play_arrow)),
+              BottomNavigationBarItem(
+                  label: _tabTitle[2], icon: Icon(Icons.settings))
+            ],
+            currentIndex: _selectedIndex,
+            onTap: (index) {
+              poke();
+              showPage(index);
+            },
+            showSelectedLabels: false,
+            showUnselectedLabels: false,
+          ),
+          body: IndexedStack(children: [
             BrowserWidget(key: _browserKey),
             PlayWidget(key: _playKey),
             SettingsWidget(key: _settingsKey)

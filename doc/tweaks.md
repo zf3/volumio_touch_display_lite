@@ -11,13 +11,11 @@ Then reboot.
 
 ## Automatic blanking of screen
 
-There are two scripts (`tools/setblank.sh` and `tools/poke.sh`) that will allow blanking 
-of the screen after 5 minutes, while keeping it on while playing. Put them in `/usr/local/bin`
-on the Raspberry Pi.
-
 Technical details:
+ * We turn on the backlight with this (0 for turning-off): `echo 255 > /sys/class/backlight/rpi_backlight/brightness`. From [here](https://forums.raspberrypi.com/viewtopic.php?t=120296).
+
+Other older methods:
  * `xset`: The Volumio touch plugins relies on the X server to do this. We do not run
 a X server, so there's no `xset` util.
  * `vbetool`: vbetool (Video Bios) is not available on ARM boards.
- * We settled down on `setterm`: `setterm --blank 1 --powerdown 2` does blank the screen. 
-   [See here](https://dietpi.com/phpbb/viewtopic.php?t=8320)).
+ * We tried `setterm` but it's unreliable: `setterm --blank 1 --powerdown 2` does blank the screen. [See here](https://dietpi.com/phpbb/viewtopic.php?t=8320)).
