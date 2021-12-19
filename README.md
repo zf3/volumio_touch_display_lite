@@ -25,7 +25,7 @@ Limitations,
 
 Touch Display Lite is a plugin to Volumio 3. It is written with Raspberry Pi 3 or 4, 
 and the Official Raspberry Pi 7-inch touch display in mind. To try it, first set up Volumio on
-Raspberry Pi. Then downloading Touch Display Lite and set up as follows,
+Raspberry Pi. Then [downloading Touch Display Lite](https://github.com/zf3/volumio_touch_display_lite/releases) and set up as follows,
 
  1. If you haven't done so, enable SSH access to Volumio by visiting [volumio.local/dev](http://volumio.local/dev).
  2. Get `touch_display_lite.zip` to volumio and unzips to a tmp dir.
