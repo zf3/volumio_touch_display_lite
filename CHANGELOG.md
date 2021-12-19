@@ -1,12 +1,15 @@
 ## More TODO
- * 打包成Volumio plugin的zip
-  * [Volumio 3 plugins source](https://github.com/balbuze/volumio-plugins-sources/)
-  * [Plugin system overview](https://volumio.github.io/docs/Plugin_System/Plugin_System_Overview)
  * 重复状态、采样率和音频格式显示。
  * Seek功能
  * 参考Apple Music
    * 正在播放页变成卡片式
    * 正在播放页加入模糊背景（album art主题色？）
+
+## 2021.12.19 - Release v0.1.0
+ * 改名为Touch Display Lite
+ * 增加打包Volumio插件
+  * [Volumio 3 plugins source](https://github.com/balbuze/volumio-plugins-sources/)
+  * [Plugin system overview](https://volumio.github.io/docs/Plugin_System/Plugin_System_Overview)
 
 ## 2021.12.12 - v1.1
  * 5分钟后自动关闭屏幕

@@ -42,4 +42,4 @@ Now enable the plugin through the Web interface.
 
 2021-12-19
 
-- First release: 0.1.0.
+- First release: 0.1.0. Ships with Flutter 2.5.3.

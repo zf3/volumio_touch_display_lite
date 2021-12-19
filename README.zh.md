@@ -1,10 +1,10 @@
 [EN](READM.md) | 中文
 
-# DigiPlayer - Volumio 3简约触控界面
+# Touch Display Lite - Volumio 3简约触控界面
 
 Feng Zhou, 2021-12
 
-这是一个[Volumio 3](https://volumio.com/)（Linux数播）的简单的触控界面。我写来在树莓派+官方7寸触屏上播放音乐用。7寸大小的屏幕在这个场景下其实很合适，但可惜Volumio官方的界面在这个屏幕上不太好用，所以不如自己动手写一个。
+touch Display Lite是一个[Volumio 3](https://volumio.com/)（Linux数播）的简单的触控界面。我写来在树莓派+官方7寸触屏上播放音乐用（理论上也可以支持其它屏）。7寸大小的屏幕在这个场景下其实很合适，但可惜Volumio官方的界面在这个屏幕上不太好用，所以不如自己动手写一个。
 
 最终结果长这样：
 
@@ -15,9 +15,24 @@ Feng Zhou, 2021-12
  * 即使在老旧的Raspberry Pi 3性能也不错。
  * 和手机App类似的触控体验。底层是flutter-pi，没有使用古老的X-Window。
 
+限制：
+ * 目前功能比较简单，就是播放曲库中的音乐，没有流媒体等功能。
+
+## 使用说明
+ 
+Touch Display Lite是Volumio 3的一个插件，主要考虑RPi 3/4与官方7寸触屏的使用。如果你已经在Pi上装好了Volumio 3，
+就可以这样安装Touch Display Lite：
+
+ 1. 打开SSH访问：在[volumio.local/dev](http://volumio.local/dev)上面可以操作。
+ 2. 取得`touch_display_lite.zip`，通过ssh上传到Pi上，用`miniunzip`解压缩。
+ 3. 在解压缩目录中，`volumio plugin install`，这个需要5-10分钟。
+ 4. 安装中文字体：`sudo apt install -y fonts-noto-cjk`
+ 5. **重启**，装截视频驱动和将屏幕转180度。如果你要其它角度，修改`/boot/config.txt`里面的`lcd_rotate`。
+ 6. 在Web页面上打开Touch Display Lite插件，Pi的显示将进入本文开头照片的界面。
+
 ## 编译DigiPlayer
 
-暂时没有时间去琢磨打包Volumio插件的事情。但是自己编译也不难，你需要：
+如果需要从头编译，你需要：
 
  * 树莓派3或4.
  * [7寸官方触屏](https://www.raspberrypi.com/products/raspberry-pi-touch-display/)。我还用了[外壳](https://www.amazon.com/Raspberry-Pi-7-Inch-Touch-Screen/dp/B01GQFUWIC)。

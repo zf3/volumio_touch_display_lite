@@ -18,12 +18,21 @@ Features,
  * Good performance even on Raspberry Pi 3.
  * Touch-native UI similar to mobile apps. It runs on flutter-pi and no X-window is used.
 
-Current limitations,
- * 
+Limitations,
+ * Functions are minimal, for example only playing from the music library, not streaming service, etc.
 
-## Plug-in Binaries
+## Using Touch Display Lite
 
-To be published.
+Touch Display Lite is a plugin to Volumio 3. It is written with Raspberry Pi 3 or 4, 
+and the Official Raspberry Pi 7-inch touch display in mind. To try it, first set up Volumio on
+Raspberry Pi. Then downloading Touch Display Lite and set up as follows,
+
+ 1. If you haven't done so, enable SSH access to Volumio by visiting [volumio.local/dev](http://volumio.local/dev).
+ 2. Get `touch_display_lite.zip` to volumio and unzips to a tmp dir.
+ 3. In the dir: `volumio plugin install`
+ 4. If you need Chinese font: `sudo apt install -y fonts-noto-cjk`
+ 5. REBOOT (by `reboot`) to load video driver and fix screen rotation
+ 6. Enable the plugin.
 
 ## Building from Source
 

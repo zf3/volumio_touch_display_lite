@@ -1,9 +1,17 @@
 #!/bin/bash
 
 ID=$(awk '/VERSION_ID=/' /etc/*-release | sed 's/VERSION_ID=//' | sed 's/\"//g')
+PDIR=/data/plugins/user_interface/touch_display_lite
 
 echo "Install flutter-pi dependencies"
-apt install cmake libgl1-mesa-dev libgles2-mesa-dev libegl1-mesa-dev libdrm-dev libgbm-dev ttf-mscorefonts-installer fontconfig libsystemd-dev libinput-dev libudev-dev  libxkbcommon-dev
+sudo apt update
+if ! sudo DEBIAN_FRONTEND=noninteractive apt install -y libgl1 libgles2-mesa ttf-mscorefonts-installer fontconfig libegl1 libinput10 libgbm1;
+then
+  echo Cannot install dependencies; exit 1
+fi
+
+# uncomment next line to install Chinese fonts
+# sudo DEBIAN_FRONTEND=noninteractive apt install -y fonts-noto-cjk
 
 echo "Refreshing font cache"
 fc-cache
@@ -12,10 +20,13 @@ echo "Configuring video driver (V3D)"
 if ! grep -q "vc4-fkms-v3d" /boot/config.txt; then
     echo "dtoverlay=vc4-fkms-v3d
 gpu_mem=64
+lcd_rotate=2
 " >> /boot/config.txt
 fi
 
 /usr/sbin/usermod -a -G render volumio
+cp $PDIR/icudtl.dat $PDIR/libflutter_engine.so.release /usr/lib
+# 
 
 chmod +x /data/plugins/user_interface/touch_display_lite/flutter-pi
 
