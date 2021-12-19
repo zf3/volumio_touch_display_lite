@@ -16,7 +16,8 @@ import 'dart:io';
 //
 const String serverAddr = "localhost";
 const int serverPort = 3000;
-const String defaultDir = 'music-library/NAS/DS/2021';
+const String defaultDir = 'music-library';
+// const String defaultDir = 'music-library/NAS/DS/2021';
 const int backlightSeconds = 300; // dim backlight after this duration
 //
 // No more changes after this

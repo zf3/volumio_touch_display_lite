@@ -1,0 +1,10 @@
+{
+    "TOUCH_DISPLAY_LITE":{
+      "PLUGIN_NAME":"Touch Display Lite",
+      "GENERIC_FAILED":"Failed: ",
+      "OK":"Ok",
+      "YES":"Yes",
+      "NO":"No",
+      "SKIP":"Skip"
+    }
+}

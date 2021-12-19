@@ -1,28 +1,33 @@
 EN | [中文](README.zh.md)
 
-# DigiPlayer - A Clean Touch UI for Volumio 3
-
-DigiPlayer is a clean touch UI for Volumio 3, written in Flutter for the Raspberry Pi Touch Display.
+# Touch Display Lite plugin for Volumio 3
 
 Feng Zhou, 2021-12
 
+Touch Display Lite is a clean and fast user interface for Volumio 3, the Linux distribution for music playback.
+It works with Raspberry Pi and the official 7-inch touch screen (and potentially other touch screens). Written in
+[Flutter](https://flutter.dev/) and using the fast [flutter-pi](https://github.com/ardera/flutter-pi) runtime, it aims
+to be fast, minimalistic and modern.
 
-
-This is a simple user interface for Volumio 3, the Linux distribution for music playback.
-I wrote it for playing music with the Raspberry Pi + 7-inch touch screen. The end result
-looks like this,
+The end result looks like this,
 
 <img src="doc/digiplayer.jpeg" width="600">
 
 Features,
- * Designed for landscape mode. The Volumio touch screen plugin works best in portrait.
+ * Designed for landscape mode. The official Volumio [Touch Display plugin](https://community.volumio.org/t/plugin-touch-display/10647) works best in portrait.
  * Good performance even on Raspberry Pi 3.
  * Touch-native UI similar to mobile apps. It runs on flutter-pi and no X-window is used.
 
-## Building DigiPlayer
+Current limitations,
+ * 
 
-Before this gets packaged as a Volumio plugin, here is what you need to build DigiPlayer
-from scratch,
+## Plug-in Binaries
+
+To be published.
+
+## Building from Source
+
+Here are instructions to build Touch Display Lite from scratch. You need,
 
  * Raspberry Pi 3 or 4.
  * Official Raspberry Pi 7-inch touch display.
@@ -41,9 +46,9 @@ cd work/flutter
 git clone https://github.com/ardera/flutter-engine-binaries-for-arm
 ```
 
-Build DigiPlayer on **dev computer**
+Build Touch Display Lite on **dev computer**
 ```
-cd digiplayer
+cd touch_display_lite
 
 # Check build_release.sh for changes of dir locations, etc.
 # This script build the flutter bundle locally, then ssh to the linux box to build app.so
@@ -51,26 +56,28 @@ cd digiplayer
 ./build_release.sh
 
 # If successful, build/flutter_assets will contain artifacts, including app.so
+# The plugin will be at build/touch_display_lite.zip
 ```
 
 Assuming [Volumio 3](https://volumio.lpages.co/volumio-3/) is already installed on Pi, follow instructions on [flutter-pi page](https://github.com/ardera/flutter-pi) to install flutter-pi, the Flutter runtime for Pi. Compilation should only take a few minutes.
 
-Now you can finally get the app onto Pi, and run it,
+Now you can get the app onto Pi, and run it to see if it works,
 ```
 rsync -av build/flutter_assets/* volumio@volumio.local:digiplayer/
 ssh volumio@volumio.local
-flutter-pi --release digiplayer
+flutter-pi --release touch_display_lite
 ```
 
-You should see DigiPlayer as shown at the beginning of this README.
+You should see Touch Display Lite as shown at the beginning of this README.
 
-Optionally you can add it to /etc/rc.local to run every time Pi starts up.
+To actually install the plugin into Volumio, use `build/touch_display_lite.zip`
 ```
-sleep 5
-/sbin/runuser -l root -c '/usr/local/bin/flutter-pi --release /home/volumio/digiplayer' > /home/volumio/log &
+mkdir touch_display_lite
+miniunzip touch_display_lite.zip -d touch_display_lite
+cd touch_display_lite
+volumio plugin install
 ```
-
-See [tweaks.md](doc/tweaks.md) for more adjustments I found useful.
+Then go to Volumio web interface, and go to `Plugins->Installed` to launch Touch Display Lite.
 
 ## Why Volumio?
 

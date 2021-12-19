@@ -1,0 +1,35 @@
+{
+	"name": "touch_display_lite",
+	"version": "0.1.0",
+	"description": "A light UI for displaying and operating Volumios on a original Raspberry 7\" touchscreen.",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "Feng Zhou",
+	"license": "Apache 2.0",
+	"repository": "",
+	"volumio_info": {
+		"prettyName": "Touch Display Lite",
+		"icon": "fa-hand-pointer-o",
+		"plugin_type": "user_interface",
+		"architectures": [
+			"armhf"
+		],
+		"os": [
+			"buster"
+		],
+		"details": "<h4>Touch Display Lite Plugin</h4><br>To be written<br>",
+		"changelog": "..."
+	},
+	"engines": {
+		"node": ">=8",
+		"volumio": ">=3"
+	},
+	"dependencies": {
+		"fs-extra": "^0.28.0",
+		"child_process":"",
+		"kew": "^0.7.0",
+		"v-conf": "^0.10.0"
+	}
+}

@@ -1,5 +1,7 @@
 ## More TODO
  * 打包成Volumio plugin的zip
+  * [Volumio 3 plugins source](https://github.com/balbuze/volumio-plugins-sources/)
+  * [Plugin system overview](https://volumio.github.io/docs/Plugin_System/Plugin_System_Overview)
  * 重复状态、采样率和音频格式显示。
  * Seek功能
  * 参考Apple Music
