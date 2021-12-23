@@ -9,7 +9,33 @@ lcd_rotate=2
 
 Then reboot.
 
-## Internation fonts
+## 7-inch HDMI touch screen
+
+ * Font is tiny on the 7-inch HDMI touch screen. This is because the screen is a non-standard resolution (1024*600). And flutter-pi uses the default 1920-1080 resolution, which is too high.
+```
+[flutter-pi] WARNING: display didn't provide valid physical dimensions.
+Dec 21 15:43:40 volumio flutter-pi[1101]:              The device-pixel ratio will default to 1.0, which may not be the fitting device-pixel ratio for your display.
+Dec 21 15:43:41 volumio flutter-pi[1101]: ===================================
+Dec 21 15:43:41 volumio flutter-pi[1101]: display mode:
+Dec 21 15:43:41 volumio flutter-pi[1101]:   resolution: 1920 x 1080
+```
+ We fixed this by adding these to /boot/config.txt (setting the custom mode):
+```
+hdmi_force_hotplug=1
+hdmi_group=2
+hdmi_mode=87
+hdmi_cvt=1024 600 60 6 0 0 0
+```
+ * Now flutter-pi picks up the right resolution. But font is still a bit small, due to unknown device-pixel ratio. Flutter-pi needs the physical dimension of the display to determine this.
+   * Width of display: 177.8 / 1187 * 1024 = 153
+   * Height of display: 177.8 / 1187 * 600 = 90
+   So we change the command line in `/lib/sys/systemd/system/touch_display_lite.service` to,
+ ```
+ ExecStart=/data/plugins/user_interface/touch_display_lite/flutter-pi --release -d "153,90" /data/plugins/user_interface/touch_display_lite/flutter_assets
+ ```
+   This fixes the problem completely.
+
+## International fonts
  * To display Chinese text, install CJK fonts with: `sudo apt install fonts-noto-cjk`. Or characters show up as squares.
 
 ## Automatic blanking of screen

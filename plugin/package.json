@@ -1,7 +1,7 @@
 {
 	"name": "touch_display_lite",
 	"version": "0.1.0",
-	"description": "A light UI for displaying and operating Volumios on a original Raspberry 7\" touchscreen.",
+	"description": "A light UI for displaying and operating Volumios on a original Raspberry 7\" Touch Display, or similar screens.",
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
@@ -19,8 +19,8 @@
 		"os": [
 			"buster"
 		],
-		"details": "<h4>Touch Display Lite Plugin</h4><br>To be written<br>",
-		"changelog": "..."
+		"details": "<h4>Touch Display Lite Plugin</h4><br>A light UI for displaying and operating Volumios on a original Raspberry 7\" Touch Display, or similar screens. Touch Display Lite is implemented with Flutter and aims to be fast, minimalistic and modern..<br>",
+		"changelog": "0.1.0 - First release."
 	},
 	"engines": {
 		"node": ">=8",

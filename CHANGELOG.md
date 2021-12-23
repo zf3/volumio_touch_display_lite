@@ -1,4 +1,5 @@
 ## More TODO
+ * Try [Flutter Embedded Linux](https://github.com/sony/flutter-embedded-linux)
  * 重复状态、采样率和音频格式显示。
  * Seek功能
  * 参考Apple Music
