@@ -24,7 +24,7 @@ Touch Display Lite是Volumio 3的一个插件，主要考虑RPi 3/4与官方7寸
 就可以这样安装Touch Display Lite：
 
  1. 打开SSH访问：在[volumio.local/dev](http://volumio.local/dev)上面可以操作。
- 2. 取得`touch_display_lite.zip`，通过ssh上传到Pi上，用`miniunzip`解压缩。
+ 2. 取得[touch_display_lite.zip](https://github.com/zf3/volumio_touch_display_lite/releases)，通过ssh上传到Pi上，用`miniunzip`解压缩。
  3. 在解压缩目录中，`volumio plugin install`，这个需要5-10分钟。
  4. 安装中文字体：`sudo apt install -y fonts-noto-cjk`
  5. **重启**，装截视频驱动和将屏幕转180度。如果你要其它角度，修改`/boot/config.txt`里面的`lcd_rotate`。
