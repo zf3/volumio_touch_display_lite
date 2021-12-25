@@ -86,7 +86,7 @@ class MyApp extends StatelessWidget {
       title: 'Digi Player',
       theme: ThemeData(
         // fontFamily: 'yahei',
-        fontFamily: 'Noto Sans CJK SC',
+        // fontFamily: 'Noto Sans CJK SC',
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: 'Digi Player', key: homeKey),
