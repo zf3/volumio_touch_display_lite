@@ -14,7 +14,7 @@ The end result looks like this,
 <img src="doc/digiplayer.jpeg" width="600">
 
 Features,
- * Designed for landscape mode. The official Volumio [Touch Display plugin](https://community.volumio.org/t/plugin-touch-display/10647) works best in portrait.
+ * Designed for landscape mode. The official Volumio [Touch Display plugin](https://community.volumio.org/t/plugin-touch-display/10647) works best in portrait mode.
  * Good performance even on Raspberry Pi 3.
  * Touch-native UI similar to mobile apps. It runs on flutter-pi and no X-window is used.
 
@@ -23,14 +23,14 @@ Limitations,
 
 ## Using Touch Display Lite
 
-Touch Display Lite is a plugin to Volumio 3. It is written with Raspberry Pi 3 or 4, 
+Touch Display Lite is a plugin for Volumio 3. It is written with Raspberry Pi 3 or 4, 
 and the Official Raspberry Pi 7-inch touch display in mind. To try it, first set up Volumio on
-Raspberry Pi. Then [downloading Touch Display Lite](https://github.com/zf3/volumio_touch_display_lite/releases) and set up as follows,
+Raspberry Pi. Then [download Touch Display Lite](https://github.com/zf3/volumio_touch_display_lite/releases) and set up as follows,
 
  1. If you haven't done so, enable SSH access to Volumio by visiting [volumio.local/dev](http://volumio.local/dev).
  2. Get `touch_display_lite.zip` to volumio and unzips to a tmp dir.
  3. In the dir: `volumio plugin install`
- 4. If you need Chinese font: `sudo apt install -y fonts-noto-cjk`
+ 4. If you need a Chinese font: `sudo apt install -y fonts-noto-cjk`
  5. REBOOT (by `reboot`) to load video driver and fix screen rotation
  6. Enable the plugin.
 
@@ -60,7 +60,7 @@ Build Touch Display Lite on **dev computer**
 cd touch_display_lite
 
 # Check build_release.sh for changes of dir locations, etc.
-# This script build the flutter bundle locally, then ssh to the linux box to build app.so
+# This script builds the flutter bundle locally, then ssh to the linux box to build app.so
 # Then check lib/main.dart for changes to serverAddr (volumio.local works for me), defaultDir, etc.
 ./build_release.sh
 
@@ -91,7 +91,7 @@ Then go to Volumio web interface, and go to `Plugins->Installed` to launch Touch
 ## Why Volumio?
 
 Here is what I like about this setup,
- * *It plays music anywhere in the home network*. I mostly use the device to play music files stored in a NAS. It is very convenient. I do not even need to touch the device to add new music.
+ * *It plays music anywhere on the home network*. I mostly use the device to play music files stored in a NAS. It is very convenient. I do not even need to touch the device to add new music.
  * *Good audio quality with digital connections*. I attached a [HiFi Berry Digi](https://www.hifiberry.com/digis/) compatible HAT to the Pi, and output audio through SPDIF fiber to my soundbar. I 3D-printed a [back-cover](tools/case/case_side.jpg) ([OpenSCAD design here](tools/case/)) for better looks.
- * *Use your phone as a remote*. Just point phone browser to http://volumio.local. Then you can browse and control your music playing there, from couch or anywhere. The Pi's play screen stays synchronized. On iPhone, touch `share->add to home screen` for easier access later.
- * Volumio has [a tons of audio features](https://volumio.lpages.co/volumio-3/) that I have not find time to explore yet.
+ * *Use your phone as a remote*. Just point your phone browser to http://volumio.local. Then you can browse and control your music playing there, from couch or anywhere. The Pi's play screen stays synchronized. On iPhone, touch `share->add to home screen` for easier access later.
+ * Volumio has [a ton of audio features](https://volumio.lpages.co/volumio-3/) that I have not found time to explore yet.
