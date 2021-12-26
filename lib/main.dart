@@ -10,18 +10,21 @@ import 'play.dart';
 import 'settings.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'dart:io';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 
 //
 // Change these settings
 //
-const String serverAddr = "localhost";
 const int serverPort = 3000;
-const String defaultDir = 'music-library';
-// const String defaultDir = 'music-library/NAS/DS/2021';
 const int backlightSeconds = 300; // dim backlight after this duration
 //
 // No more changes after this
 //
+
+late SharedPreferences prefs;
+late String serverAddr;
+late String defaultDir;
 
 // 没有transport(['websocket'])，在native client下就连不上
 Socket socket = io(
@@ -67,29 +70,56 @@ void poke() {
   backlight(true);
 }
 
-void main() async {
-  runApp(const MyApp());
-}
-
+final GlobalKey<_MyAppState> appKey = GlobalKey();
+final GlobalKey<_MyHomePageState> homeKey = GlobalKey();
 final GlobalKey<BrowserState> _browserKey = GlobalKey(),
     _playKey = GlobalKey(),
     _settingsKey = GlobalKey();
-final GlobalKey<_MyHomePageState> homeKey = GlobalKey();
+final SharePreferenceCache prefCache = SharePreferenceCache();
 
-class MyApp extends StatelessWidget {
+void main() async {
+  await Settings.init(cacheProvider: prefCache);
+  debugPrint("Keys: ${prefCache.getKeys()}");
+
+  serverAddr = Settings.getValue("server_address", 'localhost');
+  defaultDir = Settings.getValue('default_dir', 'music-library');
+
+  debugPrint("serverAddr: $serverAddr");
+  debugPrint("defaultDir: $defaultDir");
+  // darkMode = Settings.getValue("dark_mode", false);
+
+  runApp(MyApp(key: appKey));
+}
+
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool darkMode = Settings.getValue('dark_mode', false);
+
+  setDarkMode(bool dark) {
+    setState(() {
+      darkMode = dark;
+    });
+  }
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Digi Player',
+      title: 'Touch Display Lite',
       theme: ThemeData(
         // fontFamily: 'yahei',
         // fontFamily: 'Noto Sans CJK SC',
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Digi Player', key: homeKey),
+      darkTheme: ThemeData(brightness: Brightness.dark),
+      themeMode: darkMode ? ThemeMode.dark : ThemeMode.light,
+      home: MyHomePage(title: 'Touch Display Lite', key: homeKey),
     );
   }
 }

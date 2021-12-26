@@ -6,6 +6,12 @@
    * 正在播放页变成卡片式
    * 正在播放页加入模糊背景（album art主题色？）
 
+## 2021.12.26
+ * 增加一个简单的设置页，用flutter-settings-screen实现。注意在web下，需要
+   `flutter run -d web-server --web-port=3344`才能成功保存设置，`flutter run -d web`不行。
+ * 增加黑暗模式
+ * Fix dummy-volumio的albumart CORS问题
+
 ## 2021.12.19 - Release v0.1.0
  * 改名为Touch Display Lite
  * 增加打包Volumio插件
