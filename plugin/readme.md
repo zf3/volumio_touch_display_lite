@@ -28,7 +28,7 @@ ssh volumio@volumio.local (if you changed the name of your device, replace the s
 Type the following commands to download and install plugin:
 
 ```
-# Go to https://github.com/zf3/volumio_touch_display_lite and download plugin zip file.
+# First go to https://github.com/zf3/volumio_touch_display_lite/releases and download the latest plugin zip file. Then,
 mkdir ./touch_display_lite
 miniunzip touch_display_lite.zip -d ./touch_display_lite
 cd ./touch_display_lite
@@ -53,13 +53,13 @@ A few things to tweak:
 These may need some changes to work properly.
 
  * **Tiny text**. This is likely due to the Linux kernel not picking up the native resolution of the display. Googling for HDMI settings for the specific screen model should help. It probably involves changing `/boot/config.txt`. 
-   * Example: One 7-inch HDMI screen uses `1920x1080` while native resolution is `1024x600`. It is fixed by two changes. First, these were added to `/boot/config.txt`:
+   * Example: One 7-inch HDMI screen uses `1920x1080` while native resolution is `1024x600`. It was fixed by two changes. First, these were added to `/boot/config.txt`:
      ```
      hdmi_group=2
      hdmi_mode=87
      hdmi_cvt=1024 600 60 6 0 0 0
      ```
-     Second, option is added to `flutter-pi` startup script (`/lib/sys/systemd/system/touch_display_lite.service`) specifying physical dimension of the screen,
+     Second, an option was added to `flutter-pi` startup script (`/lib/sys/systemd/system/touch_display_lite.service`) specifying physical dimension of the screen,
      ```
      ExecStart=/data/plugins/user_interface/touch_display_lite/flutter-pi --release -d "153,90" /data/plugins/user_interface/touch_display_lite/flutter_assets
      ```

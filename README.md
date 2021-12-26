@@ -34,6 +34,8 @@ Raspberry Pi. Then [download Touch Display Lite](https://github.com/zf3/volumio_
  5. REBOOT (by `reboot`) to load video driver and fix screen rotation
  6. Enable the plugin.
 
+[More instructions](plugin/readme.md) (including setting up screens).
+
 ## Building from Source
 
 Here are instructions to build Touch Display Lite from scratch. You need,
