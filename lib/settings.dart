@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 import "main.dart";
 import 'package:restart_app/restart_app.dart';
+import 'dart:io';
 
 class SettingsWidget extends StatefulWidget {
   const SettingsWidget({Key? key}) : super(key: key);
@@ -53,6 +54,14 @@ class SettingsState extends State<SettingsWidget> {
             debugPrint("Prefs: ${prefCache.getKeys()}");
           }),
       TextInputSettingsTile(
+          title: 'Default Directory',
+          settingKey: 'default_dir',
+          initialValue: 'music-library',
+          onChange: (v) {
+            defaultDir = v;
+            debugPrint("Prefs: ${prefCache.getKeys()}");
+          }),
+      TextInputSettingsTile(
         title: "Server Address",
         settingKey: 'server_addr',
         initialValue: 'localhost',
@@ -62,14 +71,15 @@ class SettingsState extends State<SettingsWidget> {
           showAlertDialog(context);
         },
       ),
-      TextInputSettingsTile(
-          title: 'Default Directory',
-          settingKey: 'default_dir',
-          initialValue: 'music-library',
-          onChange: (v) {
-            defaultDir = v;
-            debugPrint("Prefs: ${prefCache.getKeys()}");
-          }),
+      ExpandableSettingsTile(title: 'More...', children: [
+        SimpleSettingsTile(
+            title: 'Exit the App',
+            subtitle: '',
+            onTap: () {
+              debugPrint('Exiting app by calling exit(0)...');
+              exit(0);
+            })
+      ])
     ]);
   }
 }

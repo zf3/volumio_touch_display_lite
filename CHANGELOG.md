@@ -1,10 +1,15 @@
 ## More TODO
+ * Album art显示不出来：`MissingPluginException: No implementation found for method getTemporaryDirectory on channel plugins.flutter.io/path_provier`
  * Try [Flutter Embedded Linux](https://github.com/sony/flutter-embedded-linux)
+ * 支持playlists, radio的播放
  * 重复状态、采样率和音频格式显示。
  * Seek功能
  * 参考Apple Music
    * 正在播放页变成卡片式
    * 正在播放页加入模糊背景（album art主题色？）
+
+## 2021.12.27
+ * 增加`shared_preferences_pi.dart`
 
 ## 2021.12.26
  * 增加一个简单的设置页，用flutter-settings-screen实现。注意在web下，需要
@@ -221,3 +226,4 @@ DONE
  * 需要增加一个[Animated Progress Bar](https://medium.com/@calebkiage/creating-an-animated-progress-indicator-in-flutter-part-2-5b78b0198a46)来作为播放进度显示
  * 好像中文名的目录浏览有问题
  * 支持横竖屏[自适应](https://docs.flutter.dev/development/ui/layout/adaptive-responsive)
+ * `shared_preferences`似乎在flutter-pi下面没有实现的插件，`[ERROR:flutter/lib/ui/ui_dart_state.cc(209)] Unhandled Exception: MissingPluginException(No implementation found for method getAll on channel plugins.flutter.io/shared_preferences)`

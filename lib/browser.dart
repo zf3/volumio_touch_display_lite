@@ -25,7 +25,7 @@ String enc(String s) {
 class BrowserState extends State<BrowserWidget> {
   String uri = defaultDir;
 
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
   fetchList() {
     debugPrint("Getting uri: $uri");

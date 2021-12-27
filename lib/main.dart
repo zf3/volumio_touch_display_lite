@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:socket_io_client/socket_io_client.dart';
+import 'package:touch_display_lite/shared_preferences_pi.dart';
 
 import 'browser.dart';
 import 'play.dart';
@@ -78,6 +79,11 @@ final GlobalKey<BrowserState> _browserKey = GlobalKey(),
 final SharePreferenceCache prefCache = SharePreferenceCache();
 
 void main() async {
+  // Register our implementation for flutter-pi
+  if (!kIsWeb) {
+    SharedPreferencesPi.registerWith();
+  }
+
   await Settings.init(cacheProvider: prefCache);
   debugPrint("Keys: ${prefCache.getKeys()}");
 
@@ -114,10 +120,14 @@ class _MyAppState extends State<MyApp> {
       title: 'Touch Display Lite',
       theme: ThemeData(
         // fontFamily: 'yahei',
-        // fontFamily: 'Noto Sans CJK SC',
-        primarySwatch: Colors.blue,
+        brightness: Brightness.light,
+        fontFamily: kIsWeb ? 'Arial' : 'Noto Sans CJK SC',
+        // primarySwatch: Colors.blue,
       ),
-      darkTheme: ThemeData(brightness: Brightness.dark),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        fontFamily: kIsWeb ? 'Arial' : 'Noto Sans CJK SC',
+      ),
       themeMode: darkMode ? ThemeMode.dark : ThemeMode.light,
       home: MyHomePage(title: 'Touch Display Lite', key: homeKey),
     );

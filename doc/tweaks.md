@@ -37,6 +37,7 @@ hdmi_cvt=1024 600 60 6 0 0 0
 
 ## International fonts
  * To display Chinese text, install CJK fonts with: `sudo apt install fonts-noto-cjk`. Or characters show up as squares.
+ * [Add locales](https://medium.com/@timcase/adding-locales-to-the-pi-for-raspbian-lite-a345c712239c)
 
 ## Automatic blanking of screen
 
