@@ -14,12 +14,12 @@ class BrowserWidget extends StatefulWidget {
 
 // 取得UTF-8的码点
 String enc(String s) {
-  if (kIsWeb) {
-    List<int> bytes = utf8.encode(s);
-    return String.fromCharCodes(bytes);
-  } else {
-    return s;
-  }
+  // if (kIsWeb) {
+  //   List<int> bytes = utf8.encode(s);
+  //   return String.fromCharCodes(bytes);
+  // } else {
+  return s;
+  // }
 }
 
 class BrowserState extends State<BrowserWidget> {

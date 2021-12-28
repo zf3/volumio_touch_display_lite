@@ -1,12 +1,19 @@
-## More TODO
- * Album art显示不出来：`MissingPluginException: No implementation found for method getTemporaryDirectory on channel plugins.flutter.io/path_provier`
- * Try [Flutter Embedded Linux](https://github.com/sony/flutter-embedded-linux)
+## TODO for 0.2.0
+ * Dark mode下界面小问题解决（播放按钮颜色等）
  * 支持playlists, radio的播放
- * 重复状态、采样率和音频格式显示。
+ * 重复状态按钮
+
+## More TODO
+ * Try [Flutter Embedded Linux](https://github.com/sony/flutter-embedded-linux)
+ * 采样率和音频格式显示。
  * Seek功能
  * 参考Apple Music
    * 正在播放页变成卡片式
    * 正在播放页加入模糊背景（album art主题色？）
+
+## 2021.12.28
+ * Flutter 2.8.1 (之前是2.5.3)
+ * Album art也可以显示出来了
 
 ## 2021.12.27
  * 增加`shared_preferences_pi.dart`
@@ -227,3 +234,4 @@ DONE
  * 好像中文名的目录浏览有问题
  * 支持横竖屏[自适应](https://docs.flutter.dev/development/ui/layout/adaptive-responsive)
  * `shared_preferences`似乎在flutter-pi下面没有实现的插件，`[ERROR:flutter/lib/ui/ui_dart_state.cc(209)] Unhandled Exception: MissingPluginException(No implementation found for method getAll on channel plugins.flutter.io/shared_preferences)`
+ * Album art显示不出来：`MissingPluginException: No implementation found for method getTemporaryDirectory on channel plugins.flutter.io/path_provider`

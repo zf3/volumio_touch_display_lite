@@ -87,7 +87,7 @@ void main() async {
   await Settings.init(cacheProvider: prefCache);
   debugPrint("Keys: ${prefCache.getKeys()}");
 
-  serverAddr = Settings.getValue("server_address", 'localhost');
+  serverAddr = Settings.getValue("server_addr", 'localhost');
   defaultDir = Settings.getValue('default_dir', 'music-library');
 
   debugPrint("serverAddr: $serverAddr");

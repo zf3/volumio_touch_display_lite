@@ -42,6 +42,10 @@ class PlayState extends State<PlayWidget> {
               if (progress.isNaN) progress = 0.0;
               debugPrint(
                   "Progress: seek=$pushSeek, duration=$pushDuration, playing=$playing, progress=$progress");
+              bool darkMode = appKey.currentState!.darkMode;
+              Color btnColor = darkMode
+                  ? const Color.fromARGB(255, 255, 255, 255)
+                  : const Color.fromARGB(255, 100, 100, 100);
 
               // Navigation stuff
               var navs = [
@@ -76,9 +80,37 @@ class PlayState extends State<PlayWidget> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     IconButton(
-                      icon: const Icon(
+                        icon: Icon(
+                          data['repeatSingle'] == true
+                              ? Icons.repeat_one_on_rounded
+                              : (data['repeat'] == true
+                                  ? Icons.repeat_on_rounded
+                                  : Icons.repeat_rounded),
+                          color: btnColor,
+                        ),
+                        iconSize: 30,
+                        onPressed: () {
+                          // self.commandRouter.volumioRepeat(data.value, data.repeatSingle);
+                          var v = {};
+                          // no repeat -> repeat all -> repeat single
+                          if (data['repeat'] == false) {
+                            v['value'] = true;
+                            v['repeatSingle'] = false;
+                          } else {
+                            if (data['repeatSingle'] = false) {
+                              v['value'] = true;
+                              v['repeatSingle'] = true;
+                            } else {
+                              v['value'] = false;
+                              v['repeatSingle'] = false;
+                            }
+                          }
+                          socket.emit('setRepeat', v);
+                        }),
+                    IconButton(
+                      icon: Icon(
                         Icons.skip_previous_rounded,
-                        color: Color.fromARGB(255, 100, 100, 100),
+                        color: btnColor,
                       ),
                       iconSize: 50,
                       onPressed: () {
@@ -87,9 +119,9 @@ class PlayState extends State<PlayWidget> {
                     ),
                     data['status'] != 'play'
                         ? IconButton(
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.play_arrow_rounded,
-                              color: Color.fromARGB(255, 100, 100, 100),
+                              color: btnColor,
                             ),
                             iconSize: 50,
                             onPressed: () {
@@ -97,18 +129,18 @@ class PlayState extends State<PlayWidget> {
                             },
                           )
                         : IconButton(
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.pause_rounded,
-                              color: Color.fromARGB(255, 100, 100, 100),
+                              color: btnColor,
                             ),
                             iconSize: 50,
                             onPressed: () {
                               socket.emit("pause");
                             }),
                     IconButton(
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.skip_next_rounded,
-                          color: Color.fromARGB(255, 100, 100, 100),
+                          color: btnColor,
                         ),
                         iconSize: 50,
                         onPressed: () {
@@ -119,7 +151,7 @@ class PlayState extends State<PlayWidget> {
                           data['random'] == true
                               ? Icons.shuffle_on_rounded
                               : Icons.shuffle_rounded,
-                          color: const Color.fromARGB(255, 100, 100, 100),
+                          color: btnColor,
                         ),
                         iconSize: 30,
                         onPressed: () {
