@@ -3,6 +3,7 @@ import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 import "main.dart";
 import 'package:restart_app/restart_app.dart';
 import 'dart:io';
+import 'package:vk/vk.dart';
 
 class SettingsWidget extends StatefulWidget {
   const SettingsWidget({Key? key}) : super(key: key);
@@ -43,6 +44,46 @@ class SettingsState extends State<SettingsWidget> {
     );
   }
 
+  showInputDialog(BuildContext context, String initial,
+      void Function(String text) onChange) {
+    // set up the textt field and virtual keyboard
+    TextEditingController controller = TextEditingController(text: initial);
+    TextField text = TextField(
+      controller: controller,
+    );
+    VirtualKeyboard vk = VirtualKeyboard(
+        type: VirtualKeyboardType.Alphanumeric,
+        height: 150,
+        textController: controller);
+    Widget okBtn = TextButton(
+      child: const Text("OK"),
+      onPressed: () {
+        onChange(controller.text.trim());
+        Navigator.of(context).pop(); // dismiss dialog
+      },
+    );
+    Widget cancelBtn = TextButton(
+        child: const Text("Cancel"),
+        onPressed: () {
+          Navigator.of(context).pop();
+        });
+
+    // set up the input dialog
+    SimpleDialog dialog = SimpleDialog(title: const Text("Input"), children: [
+      text,
+      vk,
+      Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [cancelBtn, okBtn])
+    ]);
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return dialog;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SettingsScreen(title: 'Settings', children: [
@@ -53,25 +94,30 @@ class SettingsState extends State<SettingsWidget> {
             appKey.currentState?.setDarkMode(v);
             debugPrint("Prefs: ${prefCache.getKeys()}");
           }),
-      TextInputSettingsTile(
+      SimpleSettingsTile(
           title: 'Default Directory',
-          settingKey: 'default_dir',
-          initialValue: 'music-library',
-          onChange: (v) {
-            defaultDir = v;
-            debugPrint("Prefs: ${prefCache.getKeys()}");
+          subtitle: defaultDir,
+          onTap: () {
+            showInputDialog(context, defaultDir, (text) {
+              defaultDir = text;
+              Settings.setValue('default_dir', text);
+              debugPrint("Prefs: ${prefCache.getKeys()}");
+              setState(() {});
+            });
           }),
-      TextInputSettingsTile(
-        title: "Server Address",
-        settingKey: 'server_addr',
-        initialValue: 'localhost',
-        onChange: (v) {
-          serverAddr = v;
-          debugPrint("Prefs: ${prefCache.getKeys()}");
-          showAlertDialog(context);
-        },
-      ),
       ExpandableSettingsTile(title: 'More...', children: [
+        SimpleSettingsTile(
+          title: "Server Address",
+          subtitle: serverAddr,
+          onTap: () {
+            showInputDialog(context, serverAddr, (text) {
+              serverAddr = text;
+              Settings.setValue('server_addr', text);
+              debugPrint("Prefs: ${prefCache.getKeys()}");
+              setState(() {});
+            });
+          },
+        ),
         SimpleSettingsTile(
             title: 'Exit the App',
             subtitle: '',

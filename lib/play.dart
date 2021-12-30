@@ -33,7 +33,7 @@ class PlayState extends State<PlayWidget> {
             String? url = data['albumart'];
             if (url != null) {
               url = "http://$serverAddr:$serverPort$url";
-              // debugPrint("Play screen album art: $url");
+              debugPrint("Play screen album art: $url");
               pushSeek = data['seek'] ?? 0;
               pushDuration = data['duration'];
               pushTimestamp = DateTime.now().millisecondsSinceEpoch;
@@ -97,7 +97,7 @@ class PlayState extends State<PlayWidget> {
                             v['value'] = true;
                             v['repeatSingle'] = false;
                           } else {
-                            if (data['repeatSingle'] = false) {
+                            if (data['repeatSingle'] == false) {
                               v['value'] = true;
                               v['repeatSingle'] = true;
                             } else {

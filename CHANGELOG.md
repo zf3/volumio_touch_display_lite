@@ -1,7 +1,6 @@
 ## TODO for 0.2.0
- * Dark mode下界面小问题解决（播放按钮颜色等）
+ * 带中文路径名的mp3播放似乎不工作了
  * 支持playlists, radio的播放
- * 重复状态按钮
 
 ## More TODO
  * Try [Flutter Embedded Linux](https://github.com/sony/flutter-embedded-linux)
@@ -11,9 +10,14 @@
    * 正在播放页变成卡片式
    * 正在播放页加入模糊背景（album art主题色？）
 
+## 2021.12.30
+ * 设置输入增加软键盘，用[VK](https://pub.dev/packages/vk)实现
+
 ## 2021.12.28
  * Flutter 2.8.1 (之前是2.5.3)
  * Album art也可以显示出来了
+ * Dark mode下界面小问题解决（播放按钮颜色等）
+ * 增加重复状态按钮
 
 ## 2021.12.27
  * 增加`shared_preferences_pi.dart`
