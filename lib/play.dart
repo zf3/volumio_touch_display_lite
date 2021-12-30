@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'main.dart';
 
+bool debug = false;
+
 // Once per second
 Stream<int> progressStream =
     Stream.periodic(const Duration(seconds: 1), (int x) {
@@ -33,15 +35,17 @@ class PlayState extends State<PlayWidget> {
             String? url = data['albumart'];
             if (url != null) {
               url = "http://$serverAddr:$serverPort$url";
-              debugPrint("Play screen album art: $url");
+              if (debug) debugPrint("Play screen album art: $url");
               pushSeek = data['seek'] ?? 0;
               pushDuration = data['duration'];
               pushTimestamp = DateTime.now().millisecondsSinceEpoch;
               playing = data['status'] == 'play';
               progress = pushSeek / 1000.0 / pushDuration;
               if (progress.isNaN) progress = 0.0;
-              debugPrint(
-                  "Progress: seek=$pushSeek, duration=$pushDuration, playing=$playing, progress=$progress");
+              if (debug) {
+                debugPrint(
+                    "Progress: seek=$pushSeek, duration=$pushDuration, playing=$playing, progress=$progress");
+              }
               bool darkMode = appKey.currentState!.darkMode;
               Color btnColor = darkMode
                   ? const Color.fromARGB(255, 255, 255, 255)
@@ -162,7 +166,7 @@ class PlayState extends State<PlayWidget> {
                 )
               ];
 
-              debugPrint("landscape: $landscape");
+              if (debug) debugPrint("landscape: $landscape");
               if (landscape) {
                 return Row(
                     mainAxisAlignment: MainAxisAlignment.center,

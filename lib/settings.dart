@@ -5,6 +5,8 @@ import 'package:restart_app/restart_app.dart';
 import 'dart:io';
 import 'package:vk/vk.dart';
 
+bool debug = false;
+
 class SettingsWidget extends StatefulWidget {
   const SettingsWidget({Key? key}) : super(key: key);
 
@@ -44,7 +46,7 @@ class SettingsState extends State<SettingsWidget> {
     );
   }
 
-  showInputDialog(BuildContext context, String initial,
+  showInputDialog(BuildContext context, String title, String initial,
       void Function(String text) onChange) {
     // set up the textt field and virtual keyboard
     TextEditingController controller = TextEditingController(text: initial);
@@ -69,7 +71,7 @@ class SettingsState extends State<SettingsWidget> {
         });
 
     // set up the input dialog
-    SimpleDialog dialog = SimpleDialog(title: const Text("Input"), children: [
+    SimpleDialog dialog = SimpleDialog(title: Text(title), children: [
       text,
       vk,
       Row(
@@ -92,16 +94,16 @@ class SettingsState extends State<SettingsWidget> {
           settingKey: 'dark_mode',
           onChange: (v) {
             appKey.currentState?.setDarkMode(v);
-            debugPrint("Prefs: ${prefCache.getKeys()}");
+            if (debug) debugPrint("Prefs: ${prefCache.getKeys()}");
           }),
       SimpleSettingsTile(
           title: 'Default Directory',
           subtitle: defaultDir,
           onTap: () {
-            showInputDialog(context, defaultDir, (text) {
+            showInputDialog(context, 'Default Directory', defaultDir, (text) {
               defaultDir = text;
               Settings.setValue('default_dir', text);
-              debugPrint("Prefs: ${prefCache.getKeys()}");
+              if (debug) debugPrint("Prefs: ${prefCache.getKeys()}");
               setState(() {});
             });
           }),
@@ -110,10 +112,10 @@ class SettingsState extends State<SettingsWidget> {
           title: "Server Address",
           subtitle: serverAddr,
           onTap: () {
-            showInputDialog(context, serverAddr, (text) {
+            showInputDialog(context, 'Server Address', serverAddr, (text) {
               serverAddr = text;
               Settings.setValue('server_addr', text);
-              debugPrint("Prefs: ${prefCache.getKeys()}");
+              if (debug) debugPrint("Prefs: ${prefCache.getKeys()}");
               setState(() {});
             });
           },
@@ -122,7 +124,8 @@ class SettingsState extends State<SettingsWidget> {
             title: 'Exit the App',
             subtitle: '',
             onTap: () {
-              debugPrint('Exiting app by calling exit(0)...');
+              debugPrint(
+                  'Exiting touch_display_lite app by calling exit(0)...');
               exit(0);
             })
       ])

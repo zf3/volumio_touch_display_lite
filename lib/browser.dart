@@ -1,9 +1,10 @@
-import 'dart:convert' show utf8;
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'main.dart';
+
+bool debug = false;
 
 class BrowserWidget extends StatefulWidget {
   const BrowserWidget({Key? key}) : super(key: key);
@@ -28,14 +29,14 @@ class BrowserState extends State<BrowserWidget> {
   final ScrollController _scrollController = ScrollController();
 
   fetchList() {
-    debugPrint("Getting uri: $uri");
+    if (debug) debugPrint("Getting uri: $uri");
     if (uri == '/') {
       socket.emit('getBrowseSources');
     } else {
       // Volumio 2.9 expects raw UTF-8 on server side.
       String uri2 = enc(uri);
       var data = {"uri": uri2};
-      debugPrint("URI length=${uri2.length}");
+      if (debug) debugPrint("URI length=${uri2.length}");
       socket.emit("browseLibrary", data);
     }
   }
@@ -78,7 +79,7 @@ class BrowserState extends State<BrowserWidget> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("Build");
+    if (debug) debugPrint("Build");
     return StreamBuilder<dynamic>(
         stream: browseStream,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -115,7 +116,7 @@ class BrowserState extends State<BrowserWidget> {
                 return InkWell(
                     onTap: () {
                       poke();
-                      debugPrint("URI: ${list[index]['uri']}");
+                      if (debug) debugPrint("URI: ${list[index]['uri']}");
                       if (list[index]['type'] == 'song') {
                         // 播放目录下所有歌曲
                         if (kIsWeb) {

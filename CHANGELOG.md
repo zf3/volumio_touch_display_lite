@@ -1,5 +1,4 @@
 ## TODO for 0.2.0
- * 带中文路径名的mp3播放似乎不工作了
  * 支持playlists, radio的播放
 
 ## More TODO
@@ -12,6 +11,7 @@
 
 ## 2021.12.30
  * 设置输入增加软键盘，用[VK](https://pub.dev/packages/vk)实现
+ * 通过增加一个path_provider，解决图片在release模式下不显示的问题。见[path_provider的问题](https://github.com/Baseflow/flutter_cached_network_image/issues/441#issuecomment-785473476)
 
 ## 2021.12.28
  * Flutter 2.8.1 (之前是2.5.3)

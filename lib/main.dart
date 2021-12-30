@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:socket_io_client/socket_io_client.dart';
+import 'package:touch_display_lite/path_provider_pi.dart';
 import 'package:touch_display_lite/shared_preferences_pi.dart';
 
 import 'browser.dart';
@@ -13,6 +14,8 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_settings_screens/flutter_settings_screens.dart';
+
+bool debug = false;
 
 //
 // Change these settings
@@ -79,19 +82,20 @@ final GlobalKey<BrowserState> _browserKey = GlobalKey(),
 final SharePreferenceCache prefCache = SharePreferenceCache();
 
 void main() async {
-  // Register our implementation for flutter-pi
+  // Register our sharedPreferences implementation for flutter-pi
   if (!kIsWeb) {
     SharedPreferencesPi.registerWith();
+    PathProviderPi.registerWith();
   }
 
   await Settings.init(cacheProvider: prefCache);
-  debugPrint("Keys: ${prefCache.getKeys()}");
+  if (debug) debugPrint("Keys: ${prefCache.getKeys()}");
 
   serverAddr = Settings.getValue("server_addr", 'localhost');
   defaultDir = Settings.getValue('default_dir', 'music-library');
 
-  debugPrint("serverAddr: $serverAddr");
-  debugPrint("defaultDir: $defaultDir");
+  if (debug) debugPrint("serverAddr: $serverAddr");
+  if (debug) debugPrint("defaultDir: $defaultDir");
   // darkMode = Settings.getValue("dark_mode", false);
 
   runApp(MyApp(key: appKey));
@@ -158,7 +162,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // When already in browse page, tap the tab once for defaultDir
         // tap twice and more for root (all sources)
         String? uri = _browserKey.currentState?.uri;
-        debugPrint(uri);
+        if (debug) debugPrint(uri);
         String target = (uri == defaultDir || uri == '/') ? '/' : defaultDir;
         _browserKey.currentState?.navigate(target);
       } else if (_selectedIndex == 1) {
@@ -172,9 +176,9 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
 
-    debugPrint("Setting up WebSocket");
+    if (debug) debugPrint("Setting up WebSocket");
     socket.on('pushState', (data) {
-      debugPrint("WebSocket pushState: $data");
+      if (debug) debugPrint("WebSocket pushState: $data");
       playController.add(data);
     });
     socket.onConnecting((data) => debugPrint("WebSocket connecting"));
@@ -183,11 +187,11 @@ class _MyHomePageState extends State<MyHomePage> {
     socket.onConnect((_) => debugPrint('WebSocket connected'));
     socket.onError((data) => debugPrint("WebSocket error: $data"));
     socket.on("pushBrowseSources", (data) {
-      debugPrint("WebSocket pushBrowseSources: $data");
+      if (debug) debugPrint("WebSocket pushBrowseSources: $data");
       browseController.add(data);
     });
     socket.on("pushBrowseLibrary", (data) {
-      debugPrint("WebSocket pushBrowseLibrary: ");
+      if (debug) ("WebSocket pushBrowseLibrary: ");
       debugPrint(data.toString());
       browseController.add(data);
     });
@@ -207,7 +211,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     landscape = size.height < size.width;
-    debugPrint("main landscape: $landscape");
+    if (debug) debugPrint("main landscape: $landscape");
     _playKey.currentState?.setState(() {});
     return GestureDetector(
         onTap: () => poke(),
