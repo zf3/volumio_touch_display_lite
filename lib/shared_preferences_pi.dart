@@ -30,7 +30,7 @@ class SharedPreferencesPi extends SharedPreferencesStorePlatform {
   /// Gets the file where the preferences are stored.
   Future<File?> _getLocalDataFile() async {
     // FIXME: hard-coded path
-    String? directory = "/data/plugins/user_interface/touch_display_lite/";
+    String? directory = "/data/plugins/user_interface/touch_display_lite";
     if (!fs.file(directory).existsSync()) directory = '.';
     return fs.file(path.join(directory, 'shared_preferences.json'));
   }

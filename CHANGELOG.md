@@ -1,13 +1,14 @@
-## TODO for 0.2.0
- * 支持playlists, radio的播放
-
 ## More TODO
+ * 支持playlists, radio的播放
  * Try [Flutter Embedded Linux](https://github.com/sony/flutter-embedded-linux)
  * 采样率和音频格式显示。
  * Seek功能
  * 参考Apple Music
    * 正在播放页变成卡片式
    * 正在播放页加入模糊背景（album art主题色？）
+
+## 2022.1.2 - Release v0.2.0
+ * Nothing is changed.
 
 ## 2021.12.30
  * 设置输入增加软键盘，用[VK](https://pub.dev/packages/vk)实现
