@@ -1,5 +1,3 @@
-2021-12-19
-
 # Touch Display Lite Plugin
 
 Author: Feng Zhou
@@ -72,6 +70,7 @@ These may need some changes to work properly.
  - Add choice of "dark mode".
  - Add "default directory" setting.
  - Add repeat button.
+ - Add a real settings screen, with our own virtual keyboard.
  - Bump Flutter to 2.8.1.
 
 0.1.0 - 2021-12-19
