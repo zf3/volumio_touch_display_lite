@@ -68,6 +68,12 @@ These may need some changes to work properly.
 
 ## Changelog
 
-2021-12-19
+0.2.0 - 2022-1-2
+ - Add choice of "dark mode".
+ - Add "default directory" setting.
+ - Add repeat button.
+ - Bump Flutter to 2.8.1.
 
-- First release: 0.1.0. Ships with Flutter 2.5.3.
+0.1.0 - 2021-12-19
+- First release. 
+- Ship with Flutter 2.5.3.
